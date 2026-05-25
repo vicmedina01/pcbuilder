@@ -1,5 +1,5 @@
 "use client"
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useMemo, useState } from "react"
 
 const CartContext = createContext()
 
@@ -22,13 +22,41 @@ export function CartProvider({ children }) {
     setCart((prev) => prev.filter((item) => item.id !== id))
   }
 
+  function updateQuantity(id, quantity) {
+    const nextQuantity = Number(quantity)
+
+    if (nextQuantity <= 0) {
+      removeFromCart(id)
+      return
+    }
+
+    setCart((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, quantity: nextQuantity } : item))
+    )
+  }
+
+  function clearCart() {
+    setCart([])
+  }
+
+  const total = useMemo(
+    () => cart.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0),
+    [cart]
+  )
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, total }}>
       {children}
     </CartContext.Provider>
   )
 }
 
 export function useCart() {
-  return useContext(CartContext)
+  const context = useContext(CartContext)
+
+  if (!context) {
+    throw new Error("useCart must be used inside CartProvider")
+  }
+
+  return context
 }
