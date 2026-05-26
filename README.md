@@ -1,36 +1,139 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PC Builder
+
+PC Builder is a fullstack ecommerce project for browsing PC components, building a custom PC setup, managing a cart, signing in with Google, and preparing an order checkout flow.
+
+This project was built as a first fullstack portfolio project to practice how a modern Next.js app connects frontend UI, backend route handlers, authentication, database models, and payment preparation in one codebase.
+
+## Tech Stack
+
+- Next.js App Router
+- React
+- Tailwind CSS
+- React Context API for cart state
+- Next.js Route Handlers for backend endpoints
+- NextAuth.js with Google OAuth
+- Prisma ORM
+- PostgreSQL hosted on Supabase
+- Stripe checkout preparation
+- Vercel deployment target
+
+## Features
+
+- Product catalog with component cards
+- Product detail pages
+- Cart state using React Context
+- Add, remove, update quantity, and clear cart actions
+- PC Builder page to select parts by category
+- Google sign-in with NextAuth
+- Prisma ecommerce models for products, users, orders, and order items
+- Backend routes for products, orders, and checkout
+- Stripe checkout route prepared for test/production credentials
+- Production build verified with Next.js
+
+## Project Structure
+
+```text
+app/
+  api/
+    auth/[...nextauth]/
+    checkout/
+    orders/
+    products/
+  builder/
+  cart/
+  products/
+components/
+context/
+lib/
+prisma/
+```
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies:
+
+```bash
+npm install
+```
+
+Generate the Prisma client:
+
+```bash
+npm run postinstall
+```
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open the app at:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment Variables
 
-## Learn More
+Create a `.env.local` file in the project root and add the required values:
 
-To learn more about Next.js, take a look at the following resources:
+```env
+DATABASE_URL="your_supabase_database_url"
+DIRECT_URL="your_supabase_direct_database_url"
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your_nextauth_secret"
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+GOOGLE_CLIENT_ID="your_google_client_id"
+GOOGLE_CLIENT_SECRET="your_google_client_secret"
 
-## Deploy on Vercel
+STRIPE_SECRET_KEY="your_stripe_secret_key"
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Stripe is optional while developing. If `STRIPE_SECRET_KEY` is missing, the checkout route returns a clear configuration message instead of crashing the app.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Database
+
+The database is modeled with Prisma and PostgreSQL. The main models are:
+
+- `Product`
+- `User`
+- `Order`
+- `OrderItem`
+
+Run migrations with:
+
+```bash
+npx prisma migrate dev
+```
+
+Generate Prisma client after schema changes:
+
+```bash
+npx prisma generate
+```
+
+## Scripts
+
+```bash
+npm run dev
+npm run lint
+npm run build
+npm run start
+```
+
+## Current Status
+
+The project currently includes the main ecommerce flow, cart, basic PC builder, authentication setup, Prisma models, and backend routes. Stripe is prepared, but real payments require valid Stripe credentials.
+
+## Future Improvements
+
+- Add product management from the database instead of only local fallback data
+- Add seed data for development
+- Improve PC part compatibility checks
+- Add user order history page
+- Add Stripe webhook handling
+- Improve loading and error states
+- Add tests for cart and API routes
