@@ -8,10 +8,10 @@ export const metadata = {
   description: "PC components ecommerce with an integrated PC Builder",
 }
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className="min-h-screen flex flex-col">
+    <html lang="es">
+      <body className="min-h-screen flex flex-col antialiased">
         <Providers>
           <Navbar />
           {children}
