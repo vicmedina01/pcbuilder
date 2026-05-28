@@ -136,6 +136,12 @@ Run migrations with:
 npx prisma migrate dev
 ```
 
+Seed product data with:
+
+```bash
+npm run db:seed
+```
+
 Generate Prisma client after schema changes:
 
 ```bash
