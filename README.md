@@ -4,6 +4,10 @@ PC Builder is a fullstack ecommerce project for browsing PC components, building
 
 This project was built as a first fullstack portfolio project to practice how a modern Next.js app connects frontend UI, backend route handlers, authentication, database models, and payment preparation in one codebase.
 
+## Live Demo
+
+https://pcbuilder-olive.vercel.app
+
 ## Tech Stack
 
 - Next.js App Router
@@ -76,7 +80,13 @@ http://localhost:3000
 
 ## Environment Variables
 
-Create a `.env.local` file in the project root and add the required values:
+Copy `.env.example` into `.env.local` and add the required values:
+
+```bash
+cp .env.example .env.local
+```
+
+For local development:
 
 ```env
 DATABASE_URL="your_supabase_database_url"
@@ -92,7 +102,24 @@ STRIPE_SECRET_KEY="your_stripe_secret_key"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 ```
 
+For Vercel production, set these in the Vercel dashboard:
+
+```env
+NEXTAUTH_URL="https://pcbuilder-olive.vercel.app"
+NEXT_PUBLIC_APP_URL="https://pcbuilder-olive.vercel.app"
+```
+
 Stripe is optional while developing. If `STRIPE_SECRET_KEY` is missing, the checkout route returns a clear configuration message instead of crashing the app.
+
+## Deployment
+
+The project is deployed on Vercel from the `main` branch. Production environment variables are configured in the Vercel dashboard, while local development uses `.env.local`.
+
+For Google OAuth in production, the authorized redirect URI must include:
+
+```text
+https://pcbuilder-olive.vercel.app/api/auth/callback/google
+```
 
 ## Database
 
