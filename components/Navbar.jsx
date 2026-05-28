@@ -16,6 +16,7 @@ export default function Navbar() {
           <Link className="text-gray-200 hover:text-white" href="/products">Productos</Link>
           <Link className="text-gray-200 hover:text-white" href="/builder">PC Builder</Link>
           <Link className="text-gray-200 hover:text-white" href="/cart">Carrito ({itemCount})</Link>
+          {session && <Link className="text-gray-200 hover:text-white" href="/orders">Orders</Link>}
         {session ? (
           <button onClick={() => signOut()} className="rounded bg-red-600 px-4 py-2 text-sm font-semibold hover:bg-red-700">
             Salir

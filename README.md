@@ -29,6 +29,7 @@ https://pcbuilder-olive.vercel.app
 - Add, remove, update quantity, and clear cart actions
 - PC Builder page to select parts by category
 - Google sign-in with NextAuth
+- Order history page for signed-in users
 - Prisma ecommerce models for products, users, orders, and order items
 - Backend routes for products, orders, and checkout
 - Stripe checkout route prepared for test/production credentials
@@ -164,9 +165,7 @@ The project currently includes the main ecommerce flow, cart, basic PC builder, 
 ## Future Improvements
 
 - Add product management from the database instead of only local fallback data
-- Add seed data for development
 - Improve PC part compatibility checks
-- Add user order history page
 - Add Stripe webhook handling
 - Improve loading and error states
 - Add tests for cart and API routes
