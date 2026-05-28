@@ -1,6 +1,5 @@
 "use client"
-import { Suspense } from "react"
-import { useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { signIn, useSession } from "next-auth/react"
 import { useCart } from "@/context/CartContext"
@@ -19,6 +18,13 @@ function CartContent() {
   const { cart, removeFromCart, updateQuantity, clearCart, total } = useCart()
   const [message, setMessage] = useState("")
   const [isCheckingOut, setIsCheckingOut] = useState(false)
+  const checkoutStatus = searchParams.get("checkout")
+
+  useEffect(() => {
+    if (checkoutStatus === "success") {
+      clearCart()
+    }
+  }, [checkoutStatus, clearCart])
 
   async function handleCheckout() {
     setMessage("")
@@ -31,16 +37,22 @@ function CartContent() {
     setIsCheckingOut(true)
 
     try {
-      await fetch("/api/orders", {
+      const orderResponse = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ items: cart }),
       })
+      const orderData = await orderResponse.json()
+
+      if (!orderResponse.ok) {
+        setMessage(orderData.error ?? "No se pudo crear la orden.")
+        return
+      }
 
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items: cart }),
+        body: JSON.stringify({ items: cart, orderId: orderData.order.id }),
       })
       const data = await response.json()
 
@@ -64,6 +76,11 @@ function CartContent() {
         {searchParams.get("checkout") === "success" && (
           <p className="mb-4 rounded border border-green-500/30 bg-green-500/10 p-4 text-green-200">
             Pago completado. Gracias por tu compra.
+          </p>
+        )}
+        {searchParams.get("checkout") === "cancelled" && (
+          <p className="mb-4 rounded border border-yellow-500/30 bg-yellow-500/10 p-4 text-yellow-100">
+            Checkout cancelado. Puedes volver a intentarlo cuando quieras.
           </p>
         )}
         <h1 className="text-3xl font-bold text-white">Tu carrito esta vacio</h1>
@@ -105,6 +122,11 @@ function CartContent() {
 
       <aside className="h-fit rounded-lg border border-white/10 bg-gray-900 p-5">
         <h2 className="text-xl font-bold text-white">Resumen</h2>
+        {checkoutStatus === "cancelled" && (
+          <p className="mt-4 rounded border border-yellow-500/30 bg-yellow-500/10 p-3 text-sm text-yellow-100">
+            Checkout cancelado. Revisa tu carrito e intenta de nuevo.
+          </p>
+        )}
         <div className="mt-5 flex justify-between border-b border-white/10 pb-4 text-gray-300">
           <span>Total</span>
           <span className="font-bold text-white">${total.toFixed(2)}</span>

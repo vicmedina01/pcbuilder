@@ -1,5 +1,5 @@
 export async function POST(request) {
-  const { items = [] } = await request.json()
+  const { items = [], orderId } = await request.json()
 
   if (!Array.isArray(items) || items.length === 0) {
     return Response.json({ error: "Cart is empty." }, { status: 400 })
@@ -18,9 +18,14 @@ export async function POST(request) {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || "http://localhost:3000"
   const params = new URLSearchParams({
     mode: "payment",
-    success_url: `${appUrl}/cart?checkout=success`,
-    cancel_url: `${appUrl}/cart?checkout=cancelled`,
+    success_url: `${appUrl}/cart?checkout=success&order=${orderId ?? ""}`,
+    cancel_url: `${appUrl}/cart?checkout=cancelled&order=${orderId ?? ""}`,
   })
+
+  if (orderId) {
+    params.append("client_reference_id", orderId)
+    params.append("metadata[orderId]", orderId)
+  }
 
   items.forEach((item, index) => {
     const quantity = Math.max(1, Number(item.quantity) || 1)
