@@ -33,6 +33,7 @@ https://pcbuilder-olive.vercel.app
 - Order history page for signed-in users
 - Prisma ecommerce models for products, users, orders, and order items
 - Backend routes for products, orders, and checkout
+- Local fallback product data when the database is unavailable
 - Stripe checkout route prepared for test/production credentials
 - Checkout sessions include order metadata for future webhook handling
 - Production build verified with Next.js
