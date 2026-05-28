@@ -13,6 +13,8 @@ export default function BuilderClient({ products }) {
     [selection]
   )
   const completedParts = Object.keys(selection).length
+  const missingParts = builderCategories.filter((category) => !selection[category])
+  const buildNotes = getBuildNotes(selection, missingParts)
 
   function selectProduct(category, productId) {
     const product = products.find((item) => item.id === Number(productId))
@@ -81,6 +83,14 @@ export default function BuilderClient({ products }) {
           ))}
         </div>
         <p className="mt-5 text-2xl font-bold text-white">${total.toFixed(2)}</p>
+        <div className="mt-5 rounded border border-white/10 bg-gray-800 p-4">
+          <h3 className="font-semibold text-white">Build notes</h3>
+          <ul className="mt-3 grid gap-2 text-sm text-gray-300">
+            {buildNotes.map((note) => (
+              <li key={note}>{note}</li>
+            ))}
+          </ul>
+        </div>
         <button
           onClick={addBuildToCart}
           disabled={completedParts === 0}
@@ -91,4 +101,28 @@ export default function BuilderClient({ products }) {
       </aside>
     </main>
   )
+}
+
+function getBuildNotes(selection, missingParts) {
+  const notes = []
+
+  if (missingParts.length > 0) {
+    notes.push(`Missing: ${missingParts.join(", ")}`)
+  } else {
+    notes.push("All main component categories are selected.")
+  }
+
+  if (selection.CPU && selection.Motherboard) {
+    notes.push("CPU and motherboard are selected. Check socket compatibility before buying.")
+  }
+
+  if (selection.GPU && selection.PSU) {
+    notes.push("GPU and power supply are selected. Confirm wattage requirements for the final build.")
+  }
+
+  if (selection.Case && selection.Cooling) {
+    notes.push("Case and cooling are selected. Verify cooler clearance and case airflow.")
+  }
+
+  return notes
 }
