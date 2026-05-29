@@ -172,7 +172,19 @@ npm run dev
 npm run lint
 npm run build
 npm run start
+npm run db:seed
 ```
+
+## Testing
+
+Before deploying, run:
+
+```bash
+npm run lint
+npm run build
+```
+
+For production checks, use the manual checklist in [`docs/manual-testing.md`](docs/manual-testing.md).
 
 ## Current Status
 
