@@ -36,6 +36,7 @@ https://pcbuilder-olive.vercel.app
 - Local fallback product data when the database is unavailable
 - Stripe checkout route prepared for test/production credentials
 - Checkout sessions include order metadata for future webhook handling
+- Stripe webhook route can update orders to `PAID` or `CANCELLED`
 - Production build verified with Next.js
 
 ## Project Structure
@@ -103,6 +104,7 @@ GOOGLE_CLIENT_ID="your_google_client_id"
 GOOGLE_CLIENT_SECRET="your_google_client_secret"
 
 STRIPE_SECRET_KEY="your_stripe_secret_key"
+STRIPE_WEBHOOK_SECRET="your_stripe_webhook_secret"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 ```
 
@@ -114,6 +116,17 @@ NEXT_PUBLIC_APP_URL="https://pcbuilder-olive.vercel.app"
 ```
 
 Stripe is optional while developing. If `STRIPE_SECRET_KEY` is missing, the checkout route returns a clear configuration message instead of crashing the app.
+
+For Stripe webhooks, configure this endpoint in Stripe:
+
+```text
+https://pcbuilder-olive.vercel.app/api/stripe/webhook
+```
+
+Listen for:
+
+- `checkout.session.completed`
+- `checkout.session.expired`
 
 ## Deployment
 
@@ -169,6 +182,6 @@ The project currently includes the main ecommerce flow, cart, basic PC builder, 
 
 - Add product management from the database instead of only local fallback data
 - Add deeper PC part compatibility checks
-- Add Stripe webhook handling
+- Add richer Stripe payment states and webhook event coverage
 - Improve loading and error states
 - Add tests for cart and API routes
