@@ -9,7 +9,7 @@ export default function ProductDetails({ product }) {
   return (
     <main className="mx-auto grid w-full max-w-6xl flex-1 gap-8 px-4 py-8 md:grid-cols-2 md:px-8">
       <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-900">
-        <Image src={product.image} alt={product.name} fill priority sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
+        <Image src={product.image} alt={product.name} fill priority unoptimized sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
       </div>
       <section>
         <p className="text-sm font-semibold uppercase text-blue-300">{product.category}</p>
