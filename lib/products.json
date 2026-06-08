@@ -1,6 +1,105 @@
 [
   {
     "id": 1,
+    "name": "AMD Ryzen 5 7600",
+    "description": "Procesador AM5 de 6 nucleos ideal para gaming y builds de entrada.",
+    "price": 199,
+    "category": "CPU",
+    "image": "https://placehold.co/800x600/1b4332/95d5b2?text=Ryzen+5+7600",
+    "stock": 18
+  },
+  {
+    "id": 2,
+    "name": "AMD Ryzen 7 7700X",
+    "description": "Procesador AM5 de 8 nucleos con gran rendimiento por watt.",
+    "price": 329,
+    "category": "CPU",
+    "image": "https://placehold.co/800x600/1b4332/95d5b2?text=Ryzen+7+7700X",
+    "stock": 12
+  },
+  {
+    "id": 3,
+    "name": "AMD Ryzen 7 7800X3D",
+    "description": "CPU AM5 con 3D V-Cache, excelente para gaming de alto rendimiento.",
+    "price": 389,
+    "category": "CPU",
+    "image": "https://placehold.co/800x600/1b4332/95d5b2?text=Ryzen+7+7800X3D",
+    "stock": 9
+  },
+  {
+    "id": 4,
+    "name": "AMD Ryzen 9 7900X",
+    "description": "Procesador AM5 de 12 nucleos para gaming, streaming y productividad.",
+    "price": 429,
+    "category": "CPU",
+    "image": "https://placehold.co/800x600/1b4332/95d5b2?text=Ryzen+9+7900X",
+    "stock": 7
+  },
+  {
+    "id": 5,
+    "name": "AMD Ryzen 9 7950X",
+    "description": "CPU AM5 de 16 nucleos para workloads pesados y creacion de contenido.",
+    "price": 549,
+    "category": "CPU",
+    "image": "https://placehold.co/800x600/1b4332/95d5b2?text=Ryzen+9+7950X",
+    "stock": 5
+  },
+  {
+    "id": 6,
+    "name": "Intel Core i5-14600K",
+    "description": "Procesador Intel desbloqueado con buen balance entre gaming y multitarea.",
+    "price": 299,
+    "category": "CPU",
+    "image": "https://placehold.co/800x600/003566/90e0ef?text=i5+14600K",
+    "stock": 14
+  },
+  {
+    "id": 7,
+    "name": "Intel Core i7-14700K",
+    "description": "CPU Intel de alto rendimiento para gaming, edicion y productividad.",
+    "price": 399,
+    "category": "CPU",
+    "image": "https://placehold.co/800x600/003566/90e0ef?text=i7+14700K",
+    "stock": 10
+  },
+  {
+    "id": 8,
+    "name": "Intel Core i9-14900K",
+    "description": "Procesador Intel enthusiast para builds premium y cargas intensivas.",
+    "price": 579,
+    "category": "CPU",
+    "image": "https://placehold.co/800x600/003566/90e0ef?text=i9+14900K",
+    "stock": 6
+  },
+  {
+    "id": 9,
+    "name": "Intel Core Ultra 7 265K",
+    "description": "Procesador Intel Core Ultra para plataformas nuevas y eficiencia mejorada.",
+    "price": 419,
+    "category": "CPU",
+    "image": "https://placehold.co/800x600/003566/90e0ef?text=Ultra+7+265K",
+    "stock": 8
+  },
+  {
+    "id": 10,
+    "name": "Intel Core Ultra 9 285K",
+    "description": "CPU Intel Core Ultra para builds de gama alta y tareas exigentes.",
+    "price": 629,
+    "category": "CPU",
+    "image": "https://placehold.co/800x600/003566/90e0ef?text=Ultra+9+285K",
+    "stock": 4
+  },
+  {
+    "id": 11,
+    "name": "NVIDIA GeForce RTX 4060",
+    "description": "GPU eficiente para gaming 1080p, streaming y uso diario.",
+    "price": 299,
+    "category": "GPU",
+    "image": "https://placehold.co/800x600/14213d/fca311?text=RTX+4060",
+    "stock": 15
+  },
+  {
+    "id": 12,
     "name": "NVIDIA GeForce RTX 4070",
     "description": "GPU para gaming 1440p, ray tracing y creacion de contenido.",
     "price": 599,
@@ -9,43 +108,385 @@
     "stock": 8
   },
   {
-    "id": 2,
-    "name": "AMD Ryzen 7 7700X",
-    "description": "Procesador AM5 de 8 nucleos con gran rendimiento por watt.",
+    "id": 13,
+    "name": "NVIDIA GeForce RTX 4070 Super",
+    "description": "GPU 1440p premium con mejor rendimiento en ray tracing y DLSS.",
+    "price": 649,
+    "category": "GPU",
+    "image": "https://placehold.co/800x600/14213d/fca311?text=RTX+4070+Super",
+    "stock": 7
+  },
+  {
+    "id": 14,
+    "name": "NVIDIA GeForce RTX 4080 Super",
+    "description": "Tarjeta grafica para 4K, creacion de contenido y juegos exigentes.",
+    "price": 999,
+    "category": "GPU",
+    "image": "https://placehold.co/800x600/14213d/fca311?text=RTX+4080+Super",
+    "stock": 5
+  },
+  {
+    "id": 15,
+    "name": "NVIDIA GeForce RTX 5070",
+    "description": "GPU de nueva generacion para gaming 1440p y alto refresh rate.",
+    "price": 549,
+    "category": "GPU",
+    "image": "https://placehold.co/800x600/14213d/fca311?text=RTX+5070",
+    "stock": 9
+  },
+  {
+    "id": 16,
+    "name": "NVIDIA GeForce RTX 5080",
+    "description": "GPU enthusiast para 4K, ray tracing y builds premium.",
+    "price": 999,
+    "category": "GPU",
+    "image": "https://placehold.co/800x600/14213d/fca311?text=RTX+5080",
+    "stock": 4
+  },
+  {
+    "id": 17,
+    "name": "AMD Radeon RX 7600 XT",
+    "description": "GPU Radeon para gaming 1080p con buena cantidad de VRAM.",
     "price": 329,
-    "category": "CPU",
-    "image": "https://placehold.co/800x600/1b4332/95d5b2?text=Ryzen+7",
+    "category": "GPU",
+    "image": "https://placehold.co/800x600/6a040f/ffba08?text=RX+7600+XT",
+    "stock": 13
+  },
+  {
+    "id": 18,
+    "name": "AMD Radeon RX 7800 XT",
+    "description": "Tarjeta grafica Radeon ideal para 1440p y alto rendimiento por dolar.",
+    "price": 499,
+    "category": "GPU",
+    "image": "https://placehold.co/800x600/6a040f/ffba08?text=RX+7800+XT",
+    "stock": 10
+  },
+  {
+    "id": 19,
+    "name": "AMD Radeon RX 7900 XT",
+    "description": "GPU Radeon potente para 4K, multitarea grafica y juegos AAA.",
+    "price": 749,
+    "category": "GPU",
+    "image": "https://placehold.co/800x600/6a040f/ffba08?text=RX+7900+XT",
+    "stock": 6
+  },
+  {
+    "id": 20,
+    "name": "AMD Radeon RX 7900 XTX",
+    "description": "GPU Radeon flagship para gaming 4K y builds de alto rendimiento.",
+    "price": 899,
+    "category": "GPU",
+    "image": "https://placehold.co/800x600/6a040f/ffba08?text=RX+7900+XTX",
+    "stock": 5
+  },
+  {
+    "id": 21,
+    "name": "ASUS Prime B650-PLUS",
+    "description": "Motherboard AM5 con DDR5 para builds Ryzen modernas.",
+    "price": 169,
+    "category": "Motherboard",
+    "image": "https://placehold.co/800x600/370617/ffba08?text=Prime+B650",
+    "stock": 11
+  },
+  {
+    "id": 22,
+    "name": "MSI MAG B650 Tomahawk WiFi",
+    "description": "Placa AM5 robusta con WiFi y buenas fases de alimentacion.",
+    "price": 219,
+    "category": "Motherboard",
+    "image": "https://placehold.co/800x600/370617/ffba08?text=B650+Tomahawk",
+    "stock": 8
+  },
+  {
+    "id": 23,
+    "name": "Gigabyte B650 AORUS Elite AX",
+    "description": "Motherboard AM5 con conectividad moderna y soporte DDR5.",
+    "price": 229,
+    "category": "Motherboard",
+    "image": "https://placehold.co/800x600/370617/ffba08?text=B650+AORUS",
+    "stock": 9
+  },
+  {
+    "id": 24,
+    "name": "ASUS ROG Strix X670E-E",
+    "description": "Motherboard AM5 premium para Ryzen de alto rendimiento.",
+    "price": 499,
+    "category": "Motherboard",
+    "image": "https://placehold.co/800x600/370617/ffba08?text=X670E-E",
+    "stock": 4
+  },
+  {
+    "id": 25,
+    "name": "ASRock X670E Steel Legend",
+    "description": "Placa AM5 X670E con buen balance entre prestaciones y precio.",
+    "price": 299,
+    "category": "Motherboard",
+    "image": "https://placehold.co/800x600/370617/ffba08?text=X670E+Steel",
+    "stock": 6
+  },
+  {
+    "id": 26,
+    "name": "MSI PRO B760-P WiFi DDR4",
+    "description": "Motherboard Intel LGA1700 con soporte DDR4 para builds accesibles.",
+    "price": 149,
+    "category": "Motherboard",
+    "image": "https://placehold.co/800x600/03045e/90e0ef?text=B760-P+DDR4",
     "stock": 12
   },
   {
-    "id": 3,
-    "name": "Kingston Fury 32GB DDR5",
-    "description": "Kit dual channel DDR5 ideal para gaming y multitarea.",
+    "id": 27,
+    "name": "ASUS TUF Gaming B760-PLUS WiFi",
+    "description": "Placa Intel B760 con WiFi y buen soporte para gaming.",
+    "price": 189,
+    "category": "Motherboard",
+    "image": "https://placehold.co/800x600/03045e/90e0ef?text=TUF+B760",
+    "stock": 10
+  },
+  {
+    "id": 28,
+    "name": "Gigabyte Z790 AORUS Elite AX",
+    "description": "Motherboard Z790 para procesadores Intel desbloqueados.",
+    "price": 259,
+    "category": "Motherboard",
+    "image": "https://placehold.co/800x600/03045e/90e0ef?text=Z790+AORUS",
+    "stock": 7
+  },
+  {
+    "id": 29,
+    "name": "MSI MPG Z790 Edge WiFi",
+    "description": "Placa Z790 con VRM solido, WiFi y soporte para overclock.",
+    "price": 349,
+    "category": "Motherboard",
+    "image": "https://placehold.co/800x600/03045e/90e0ef?text=Z790+Edge",
+    "stock": 5
+  },
+  {
+    "id": 30,
+    "name": "ASUS ROG Maximus Z790 Hero",
+    "description": "Motherboard Intel premium para builds enthusiast.",
+    "price": 599,
+    "category": "Motherboard",
+    "image": "https://placehold.co/800x600/03045e/90e0ef?text=Z790+Hero",
+    "stock": 3
+  },
+  {
+    "id": 31,
+    "name": "Corsair Vengeance 16GB DDR4 3200",
+    "description": "Kit de memoria DDR4 confiable para builds de entrada.",
+    "price": 49,
+    "category": "RAM",
+    "image": "https://placehold.co/800x600/2b2d42/edf2f4?text=16GB+DDR4",
+    "stock": 24
+  },
+  {
+    "id": 32,
+    "name": "G.Skill Ripjaws V 32GB DDR4 3600",
+    "description": "Kit DDR4 de 32GB para gaming y multitarea.",
+    "price": 79,
+    "category": "RAM",
+    "image": "https://placehold.co/800x600/2b2d42/edf2f4?text=32GB+DDR4",
+    "stock": 21
+  },
+  {
+    "id": 33,
+    "name": "Kingston Fury Beast 32GB DDR5 5600",
+    "description": "Memoria DDR5 estable para plataformas modernas.",
+    "price": 109,
+    "category": "RAM",
+    "image": "https://placehold.co/800x600/2b2d42/edf2f4?text=32GB+DDR5+5600",
+    "stock": 18
+  },
+  {
+    "id": 34,
+    "name": "Corsair Vengeance 32GB DDR5 6000",
+    "description": "Kit DDR5 6000 ideal para Ryzen AM5 y builds gaming.",
     "price": 129,
     "category": "RAM",
-    "image": "https://placehold.co/800x600/2b2d42/edf2f4?text=32GB+DDR5",
+    "image": "https://placehold.co/800x600/2b2d42/edf2f4?text=32GB+DDR5+6000",
     "stock": 20
   },
   {
-    "id": 4,
+    "id": 35,
+    "name": "G.Skill Trident Z5 RGB 32GB DDR5 6400",
+    "description": "RAM DDR5 RGB de alto rendimiento para equipos premium.",
+    "price": 159,
+    "category": "RAM",
+    "image": "https://placehold.co/800x600/2b2d42/edf2f4?text=Trident+Z5",
+    "stock": 12
+  },
+  {
+    "id": 36,
+    "name": "TeamGroup T-Force Delta RGB 32GB DDR5",
+    "description": "Kit DDR5 con iluminacion RGB para builds llamativas.",
+    "price": 139,
+    "category": "RAM",
+    "image": "https://placehold.co/800x600/2b2d42/edf2f4?text=T-Force+DDR5",
+    "stock": 14
+  },
+  {
+    "id": 37,
+    "name": "Kingston Fury Beast 64GB DDR5 6000",
+    "description": "Memoria de 64GB para creacion de contenido y cargas pesadas.",
+    "price": 229,
+    "category": "RAM",
+    "image": "https://placehold.co/800x600/2b2d42/edf2f4?text=64GB+DDR5",
+    "stock": 9
+  },
+  {
+    "id": 38,
+    "name": "Corsair Dominator Titanium 64GB DDR5",
+    "description": "Kit DDR5 premium con alto rendimiento y estetica enthusiast.",
+    "price": 299,
+    "category": "RAM",
+    "image": "https://placehold.co/800x600/2b2d42/edf2f4?text=Dominator+64GB",
+    "stock": 6
+  },
+  {
+    "id": 39,
+    "name": "Crucial Pro 32GB DDR5 5600",
+    "description": "RAM DDR5 discreta y estable para estaciones de trabajo.",
+    "price": 99,
+    "category": "RAM",
+    "image": "https://placehold.co/800x600/2b2d42/edf2f4?text=Crucial+DDR5",
+    "stock": 17
+  },
+  {
+    "id": 40,
+    "name": "Patriot Viper Venom 32GB DDR5 6200",
+    "description": "Kit DDR5 de baja latencia para gaming y productividad.",
+    "price": 149,
+    "category": "RAM",
+    "image": "https://placehold.co/800x600/2b2d42/edf2f4?text=Viper+Venom",
+    "stock": 11
+  },
+  {
+    "id": 41,
+    "name": "Samsung 970 EVO Plus 1TB",
+    "description": "SSD NVMe confiable para sistema operativo y juegos.",
+    "price": 69,
+    "category": "Storage",
+    "image": "https://placehold.co/800x600/003566/ffc300?text=970+EVO+1TB",
+    "stock": 22
+  },
+  {
+    "id": 42,
     "name": "Samsung 980 Pro 1TB",
     "description": "SSD NVMe PCIe 4.0 rapido para sistema, juegos y proyectos.",
     "price": 89,
     "category": "Storage",
-    "image": "https://placehold.co/800x600/003566/ffc300?text=980+Pro",
+    "image": "https://placehold.co/800x600/003566/ffc300?text=980+Pro+1TB",
     "stock": 16
   },
   {
-    "id": 5,
-    "name": "ASUS ROG B650",
-    "description": "Motherboard AM5 con DDR5, PCIe 4.0 y conectividad moderna.",
-    "price": 249,
-    "category": "Motherboard",
-    "image": "https://placehold.co/800x600/370617/ffba08?text=ROG+B650",
-    "stock": 6
+    "id": 43,
+    "name": "Samsung 990 Pro 2TB",
+    "description": "SSD PCIe 4.0 de alto rendimiento para gaming y creacion.",
+    "price": 169,
+    "category": "Storage",
+    "image": "https://placehold.co/800x600/003566/ffc300?text=990+Pro+2TB",
+    "stock": 13
   },
   {
-    "id": 6,
+    "id": 44,
+    "name": "WD Black SN850X 1TB",
+    "description": "NVMe rapido orientado a gaming y cargas intensivas.",
+    "price": 99,
+    "category": "Storage",
+    "image": "https://placehold.co/800x600/003566/ffc300?text=SN850X+1TB",
+    "stock": 15
+  },
+  {
+    "id": 45,
+    "name": "WD Black SN850X 2TB",
+    "description": "SSD NVMe de 2TB para bibliotecas grandes de juegos.",
+    "price": 159,
+    "category": "Storage",
+    "image": "https://placehold.co/800x600/003566/ffc300?text=SN850X+2TB",
+    "stock": 12
+  },
+  {
+    "id": 46,
+    "name": "Crucial P3 Plus 2TB",
+    "description": "SSD NVMe de buena capacidad para builds equilibradas.",
+    "price": 119,
+    "category": "Storage",
+    "image": "https://placehold.co/800x600/003566/ffc300?text=P3+Plus+2TB",
+    "stock": 19
+  },
+  {
+    "id": 47,
+    "name": "Crucial T700 2TB PCIe 5.0",
+    "description": "SSD PCIe 5.0 para usuarios que buscan velocidades extremas.",
+    "price": 249,
+    "category": "Storage",
+    "image": "https://placehold.co/800x600/003566/ffc300?text=T700+2TB",
+    "stock": 7
+  },
+  {
+    "id": 48,
+    "name": "Kingston KC3000 2TB",
+    "description": "SSD NVMe rapido para gaming, edicion y productividad.",
+    "price": 149,
+    "category": "Storage",
+    "image": "https://placehold.co/800x600/003566/ffc300?text=KC3000+2TB",
+    "stock": 10
+  },
+  {
+    "id": 49,
+    "name": "Seagate FireCuda 530 4TB",
+    "description": "NVMe de gran capacidad para proyectos, juegos y media.",
+    "price": 399,
+    "category": "Storage",
+    "image": "https://placehold.co/800x600/003566/ffc300?text=FireCuda+4TB",
+    "stock": 5
+  },
+  {
+    "id": 50,
+    "name": "Samsung 870 EVO 4TB SATA",
+    "description": "SSD SATA de alta capacidad para almacenamiento secundario.",
+    "price": 299,
+    "category": "Storage",
+    "image": "https://placehold.co/800x600/003566/ffc300?text=870+EVO+4TB",
+    "stock": 8
+  },
+  {
+    "id": 51,
+    "name": "Corsair CX650M",
+    "description": "Fuente semi-modular 650W para builds de entrada y gama media.",
+    "price": 79,
+    "category": "PSU",
+    "image": "https://placehold.co/800x600/212529/f8f9fa?text=CX650M",
+    "stock": 16
+  },
+  {
+    "id": 52,
+    "name": "EVGA SuperNOVA 650 GT",
+    "description": "PSU 650W 80+ Gold para equipos eficientes.",
+    "price": 99,
+    "category": "PSU",
+    "image": "https://placehold.co/800x600/212529/f8f9fa?text=650+GT",
+    "stock": 14
+  },
+  {
+    "id": 53,
+    "name": "Corsair RM750e",
+    "description": "Fuente 750W 80+ Gold modular para builds gaming modernas.",
+    "price": 119,
+    "category": "PSU",
+    "image": "https://placehold.co/800x600/212529/f8f9fa?text=RM750e",
+    "stock": 13
+  },
+  {
+    "id": 54,
+    "name": "Seasonic Focus GX-750",
+    "description": "PSU 750W modular con alta confiabilidad y eficiencia.",
+    "price": 129,
+    "category": "PSU",
+    "image": "https://placehold.co/800x600/212529/f8f9fa?text=GX-750",
+    "stock": 11
+  },
+  {
+    "id": 55,
     "name": "Corsair RM850x",
     "description": "Fuente 80+ Gold modular con potencia para GPUs actuales.",
     "price": 139,
@@ -54,7 +495,52 @@
     "stock": 10
   },
   {
-    "id": 7,
+    "id": 56,
+    "name": "MSI MPG A850G PCIE5",
+    "description": "Fuente 850W con soporte PCIe 5.0 para GPUs recientes.",
+    "price": 149,
+    "category": "PSU",
+    "image": "https://placehold.co/800x600/212529/f8f9fa?text=A850G+PCIE5",
+    "stock": 9
+  },
+  {
+    "id": 57,
+    "name": "be quiet! Pure Power 12 M 850W",
+    "description": "PSU 850W silenciosa con certificacion 80+ Gold.",
+    "price": 159,
+    "category": "PSU",
+    "image": "https://placehold.co/800x600/212529/f8f9fa?text=Pure+Power+850W",
+    "stock": 8
+  },
+  {
+    "id": 58,
+    "name": "Corsair RM1000x",
+    "description": "Fuente 1000W modular para builds premium con GPUs high-end.",
+    "price": 199,
+    "category": "PSU",
+    "image": "https://placehold.co/800x600/212529/f8f9fa?text=RM1000x",
+    "stock": 7
+  },
+  {
+    "id": 59,
+    "name": "Seasonic Vertex GX-1000",
+    "description": "PSU 1000W ATX 3.0 para sistemas de alto consumo.",
+    "price": 229,
+    "category": "PSU",
+    "image": "https://placehold.co/800x600/212529/f8f9fa?text=Vertex+1000W",
+    "stock": 5
+  },
+  {
+    "id": 60,
+    "name": "ASUS ROG Thor 1200W",
+    "description": "Fuente premium de 1200W para configuraciones extremas.",
+    "price": 349,
+    "category": "PSU",
+    "image": "https://placehold.co/800x600/212529/f8f9fa?text=ROG+Thor+1200W",
+    "stock": 3
+  },
+  {
+    "id": 61,
     "name": "NZXT H5 Flow",
     "description": "Gabinete ATX con excelente flujo de aire y montaje limpio.",
     "price": 94,
@@ -63,12 +549,174 @@
     "stock": 9
   },
   {
-    "id": 8,
+    "id": 62,
+    "name": "NZXT H7 Flow",
+    "description": "Case ATX espacioso con buen airflow para GPUs grandes.",
+    "price": 129,
+    "category": "Case",
+    "image": "https://placehold.co/800x600/264653/e9c46a?text=H7+Flow",
+    "stock": 8
+  },
+  {
+    "id": 63,
+    "name": "Corsair 4000D Airflow",
+    "description": "Gabinete mid-tower popular con buen manejo de cables.",
+    "price": 104,
+    "category": "Case",
+    "image": "https://placehold.co/800x600/264653/e9c46a?text=4000D",
+    "stock": 13
+  },
+  {
+    "id": 64,
+    "name": "Corsair 5000D Airflow",
+    "description": "Case amplio para radiadores, GPUs grandes y builds limpias.",
+    "price": 174,
+    "category": "Case",
+    "image": "https://placehold.co/800x600/264653/e9c46a?text=5000D",
+    "stock": 6
+  },
+  {
+    "id": 65,
+    "name": "Fractal Design North",
+    "description": "Gabinete elegante con panel frontal estilo madera.",
+    "price": 149,
+    "category": "Case",
+    "image": "https://placehold.co/800x600/264653/e9c46a?text=Fractal+North",
+    "stock": 7
+  },
+  {
+    "id": 66,
+    "name": "Fractal Meshify 2 Compact",
+    "description": "Case compacto con gran flujo de aire y diseno sobrio.",
+    "price": 139,
+    "category": "Case",
+    "image": "https://placehold.co/800x600/264653/e9c46a?text=Meshify+2",
+    "stock": 8
+  },
+  {
+    "id": 67,
+    "name": "Lian Li O11 Dynamic EVO",
+    "description": "Gabinete premium para builds RGB y refrigeracion liquida.",
+    "price": 169,
+    "category": "Case",
+    "image": "https://placehold.co/800x600/264653/e9c46a?text=O11+EVO",
+    "stock": 6
+  },
+  {
+    "id": 68,
+    "name": "Phanteks Eclipse G360A",
+    "description": "Case airflow con ventiladores incluidos para gaming.",
+    "price": 99,
+    "category": "Case",
+    "image": "https://placehold.co/800x600/264653/e9c46a?text=G360A",
+    "stock": 10
+  },
+  {
+    "id": 69,
+    "name": "Cooler Master NR200P",
+    "description": "Gabinete mini-ITX compacto para builds pequenos y potentes.",
+    "price": 119,
+    "category": "Case",
+    "image": "https://placehold.co/800x600/264653/e9c46a?text=NR200P",
+    "stock": 5
+  },
+  {
+    "id": 70,
+    "name": "Hyte Y60",
+    "description": "Case panoramico para builds visuales y componentes premium.",
+    "price": 199,
+    "category": "Case",
+    "image": "https://placehold.co/800x600/264653/e9c46a?text=Hyte+Y60",
+    "stock": 4
+  },
+  {
+    "id": 71,
+    "name": "DeepCool AK400",
+    "description": "Disipador de aire economico para CPUs de consumo moderado.",
+    "price": 34,
+    "category": "Cooling",
+    "image": "https://placehold.co/800x600/343a40/ced4da?text=AK400",
+    "stock": 20
+  },
+  {
+    "id": 72,
     "name": "DeepCool AK620",
     "description": "Disipador de doble torre para CPUs de alto rendimiento.",
     "price": 64,
     "category": "Cooling",
     "image": "https://placehold.co/800x600/343a40/ced4da?text=AK620",
     "stock": 14
+  },
+  {
+    "id": 73,
+    "name": "Noctua NH-U12S redux",
+    "description": "Cooler de aire silencioso y confiable para builds sobrias.",
+    "price": 54,
+    "category": "Cooling",
+    "image": "https://placehold.co/800x600/343a40/ced4da?text=NH-U12S",
+    "stock": 12
+  },
+  {
+    "id": 74,
+    "name": "Noctua NH-D15",
+    "description": "Disipador premium de doble torre para CPUs exigentes.",
+    "price": 109,
+    "category": "Cooling",
+    "image": "https://placehold.co/800x600/343a40/ced4da?text=NH-D15",
+    "stock": 8
+  },
+  {
+    "id": 75,
+    "name": "be quiet! Dark Rock Pro 5",
+    "description": "Cooler de aire silencioso para procesadores de alta gama.",
+    "price": 99,
+    "category": "Cooling",
+    "image": "https://placehold.co/800x600/343a40/ced4da?text=Dark+Rock+Pro",
+    "stock": 7
+  },
+  {
+    "id": 76,
+    "name": "Cooler Master Hyper 212 Black",
+    "description": "Disipador clasico para upgrades y builds de presupuesto.",
+    "price": 49,
+    "category": "Cooling",
+    "image": "https://placehold.co/800x600/343a40/ced4da?text=Hyper+212",
+    "stock": 18
+  },
+  {
+    "id": 77,
+    "name": "Corsair iCUE H100i Elite",
+    "description": "Refrigeracion liquida AIO de 240mm para builds modernas.",
+    "price": 139,
+    "category": "Cooling",
+    "image": "https://placehold.co/800x600/343a40/ced4da?text=H100i",
+    "stock": 10
+  },
+  {
+    "id": 78,
+    "name": "NZXT Kraken 280",
+    "description": "AIO de 280mm con buen balance entre ruido y rendimiento.",
+    "price": 159,
+    "category": "Cooling",
+    "image": "https://placehold.co/800x600/343a40/ced4da?text=Kraken+280",
+    "stock": 8
+  },
+  {
+    "id": 79,
+    "name": "Arctic Liquid Freezer III 360",
+    "description": "AIO de 360mm con excelente rendimiento termico.",
+    "price": 129,
+    "category": "Cooling",
+    "image": "https://placehold.co/800x600/343a40/ced4da?text=LF+III+360",
+    "stock": 9
+  },
+  {
+    "id": 80,
+    "name": "Lian Li Galahad II Trinity 360",
+    "description": "Refrigeracion liquida 360mm con estetica premium y RGB.",
+    "price": 169,
+    "category": "Cooling",
+    "image": "https://placehold.co/800x600/343a40/ced4da?text=Galahad+360",
+    "stock": 6
   }
 ]
