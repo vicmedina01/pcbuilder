@@ -4,13 +4,13 @@ import Providers from "@/components/Providers"
 import "./globals.css"
 
 export const metadata = {
-  title: "PCBuilder",
-  description: "PC components ecommerce with an integrated PC Builder",
+  title: "PCBuilder | Build for the way you play",
+  description: "Guided PC recommendations for gaming, AI, and creative work.",
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es">
+    <html lang="en">
       <body className="min-h-screen flex flex-col antialiased">
         <Providers>
           <Navbar />

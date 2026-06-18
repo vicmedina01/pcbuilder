@@ -106,7 +106,7 @@ export default function BuilderClient({ products }) {
     <main className="mx-auto grid w-full max-w-7xl flex-1 gap-8 px-4 py-8 md:px-8 xl:grid-cols-[minmax(0,1fr)_380px]">
       <section className="min-w-0">
         <div className="border-b border-white/10 pb-8">
-          <p className="text-sm font-semibold uppercase text-blue-300">PC Builder</p>
+          <p className="section-label">PC Builder</p>
           <div className="mt-3 grid gap-5 lg:grid-cols-[1fr_300px] lg:items-end">
             <div>
               <h1 className="text-4xl font-bold text-white md:text-5xl">Build around what you actually play.</h1>
@@ -115,7 +115,7 @@ export default function BuilderClient({ products }) {
                 and generates video searches for the CPU/GPU combo you choose.
               </p>
             </div>
-            <div className="grid grid-cols-3 gap-2 rounded border border-white/10 bg-gray-900 p-3 text-center">
+            <div className="grid grid-cols-3 gap-2 border border-white/10 bg-[#111412] p-3 text-center">
               <Stat label="Parts" value={`${completedParts}/${builderCategories.length}`} />
               <Stat label="Target" value={profile.resolution} />
               <Stat label="Budget" value={budgetStatus} />
@@ -124,7 +124,7 @@ export default function BuilderClient({ products }) {
         </div>
 
         <div className="mt-8 grid gap-6">
-          <section className="grid gap-4 rounded border border-white/10 bg-gray-950 p-4">
+          <section className="grid gap-4 border border-white/10 bg-[#0d100e] p-4">
             <div className="grid gap-3 lg:grid-cols-3">
               {NEEDS.map((need) => (
                 <button
@@ -133,8 +133,8 @@ export default function BuilderClient({ products }) {
                   onClick={() => updateProfile("need", need.id)}
                   className={`rounded border p-4 text-left ${
                     profile.need === need.id
-                      ? "border-blue-400 bg-blue-500/15 text-white"
-                      : "border-white/10 bg-gray-900 text-gray-300 hover:border-white/30"
+                      ? "border-[#b7f34a] bg-[#b7f34a]/10 text-white"
+                      : "border-white/10 bg-[#111412] text-gray-300 hover:border-white/30"
                   }`}
                 >
                   <span className="block text-lg font-bold">{need.label}</span>
@@ -175,8 +175,8 @@ export default function BuilderClient({ products }) {
                       onClick={() => toggleGame(game)}
                       className={`rounded border px-3 py-2 text-sm font-semibold ${
                         profile.games.includes(game)
-                          ? "border-blue-400 bg-blue-500/15 text-blue-100"
-                          : "border-white/10 bg-gray-900 text-gray-300 hover:border-white/30"
+                          ? "border-[#b7f34a] bg-[#b7f34a]/10 text-[#e7ffc0]"
+                          : "border-white/10 bg-[#111412] text-gray-300 hover:border-white/30"
                       }`}
                     >
                       {game}
@@ -187,10 +187,10 @@ export default function BuilderClient({ products }) {
             )}
           </section>
 
-          <section className="rounded border border-blue-400/30 bg-blue-950/20 p-4">
+          <section className="border border-[#b7f34a]/30 bg-[#b7f34a]/5 p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <p className="text-sm font-semibold uppercase text-blue-300">Recommended starting point</p>
+                <p className="section-label">Recommended starting point</p>
                 <p className="mt-1 text-sm text-gray-300">
                   Based on {profile.need}, {profile.resolution}, {profile.fps}, and your budget profile.
                 </p>
@@ -198,7 +198,7 @@ export default function BuilderClient({ products }) {
               <button
                 type="button"
                 onClick={applyRecommendedBuild}
-                className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
+                className="bg-[#b7f34a] px-4 py-2 font-black text-black hover:bg-[#93d329]"
               >
                 Apply build
               </button>
@@ -217,10 +217,10 @@ export default function BuilderClient({ products }) {
               const recommended = recommendations[category]
 
               return (
-                <div key={category} className="rounded border border-white/10 bg-gray-900 p-4">
+                <div key={category} className="border border-white/10 bg-[#111412] p-4">
                   <div className="grid gap-4 lg:grid-cols-[180px_minmax(0,1fr)_260px] lg:items-center">
                     <div>
-                      <p className="text-sm font-semibold uppercase text-blue-300">{category}</p>
+                      <p className="section-label">{category}</p>
                       <p className="mt-2 text-sm text-gray-400">{selected ? "Selected component" : "No part selected"}</p>
                     </div>
 
@@ -242,7 +242,7 @@ export default function BuilderClient({ products }) {
                       <button
                         type="button"
                         onClick={() => selectProduct(category, recommended.id)}
-                        className="rounded border border-blue-400/40 px-3 py-3 text-sm font-semibold text-blue-100 hover:bg-blue-500/10"
+                        className="border border-[#b7f34a]/40 px-3 py-3 text-sm font-bold text-[#e7ffc0] hover:bg-[#b7f34a]/10"
                       >
                         Use recommended
                       </button>
@@ -277,7 +277,7 @@ export default function BuilderClient({ products }) {
         </div>
       </section>
 
-      <aside className="h-fit rounded border border-white/10 bg-gray-950 p-5 xl:sticky xl:top-6">
+      <aside className="h-fit border border-white/10 bg-[#0d100e] p-5 xl:sticky xl:top-32">
         <h2 className="text-xl font-bold text-white">Build summary</h2>
         <p className="mt-2 text-sm text-gray-400">
           {completedParts} of {builderCategories.length} parts selected
@@ -294,12 +294,12 @@ export default function BuilderClient({ products }) {
           ))}
         </div>
 
-        <div className="mt-5 rounded border border-white/10 bg-gray-900 p-4">
+        <div className="mt-5 border border-white/10 bg-[#111412] p-4">
           <p className="text-sm font-semibold uppercase text-gray-400">Estimated total</p>
           <p className="mt-1 text-3xl font-bold text-white">${total.toFixed(2)}</p>
         </div>
 
-        <div className="mt-5 rounded border border-white/10 bg-gray-900 p-4">
+        <div className="mt-5 border border-white/10 bg-[#111412] p-4">
           <h3 className="font-semibold text-white">Build notes</h3>
           <ul className="mt-3 grid gap-2 text-sm leading-6 text-gray-300">
             {buildNotes.map((note) => (
@@ -308,7 +308,7 @@ export default function BuilderClient({ products }) {
           </ul>
         </div>
 
-        <div className="mt-5 rounded border border-white/10 bg-gray-900 p-4">
+        <div className="mt-5 border border-white/10 bg-[#111412] p-4">
           <h3 className="font-semibold text-white">Performance videos</h3>
           <div className="mt-3 grid gap-2">
             {performanceLinks.length > 0 ? (
@@ -318,7 +318,7 @@ export default function BuilderClient({ products }) {
                   href={link.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded border border-white/10 px-3 py-2 text-sm font-semibold text-blue-200 hover:border-blue-400/50"
+                  className="border border-white/10 px-3 py-2 text-sm font-semibold text-[#dfffa9] hover:border-[#b7f34a]/50"
                 >
                   {link.label}
                 </a>
@@ -332,7 +332,7 @@ export default function BuilderClient({ products }) {
         <button
           onClick={addBuildToCart}
           disabled={completedParts === 0}
-          className="mt-5 w-full rounded bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-900"
+          className="mt-5 w-full bg-[#b7f34a] px-5 py-3 font-black text-black hover:bg-[#93d329] disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400"
         >
           Add build to cart
         </button>
@@ -358,14 +358,14 @@ function SegmentedControl({ label, value, options, onChange }) {
   return (
     <div>
       <p className="text-sm font-semibold uppercase text-gray-400">{label}</p>
-      <div className="mt-3 grid grid-cols-3 rounded border border-white/10 bg-gray-900 p-1">
+      <div className="mt-3 grid grid-cols-3 border border-white/10 bg-[#111412] p-1">
         {normalizedOptions.map((option) => (
           <button
             key={option.value}
             type="button"
             onClick={() => onChange(option.value)}
             className={`rounded px-2 py-2 text-sm font-semibold ${
-              value === option.value ? "bg-blue-600 text-white" : "text-gray-300 hover:bg-white/5"
+              value === option.value ? "bg-[#b7f34a] text-black" : "text-gray-300 hover:bg-white/5"
             }`}
           >
             {option.label}
@@ -379,7 +379,7 @@ function SegmentedControl({ label, value, options, onChange }) {
 function MiniProduct({ category, product }) {
   if (!product) {
     return (
-      <div className="rounded border border-white/10 bg-gray-900 p-3">
+      <div className="border border-white/10 bg-[#111412] p-3">
         <p className="text-xs font-semibold uppercase text-gray-500">{category}</p>
         <p className="mt-2 text-sm font-semibold text-gray-300">No match yet</p>
       </div>
@@ -387,8 +387,8 @@ function MiniProduct({ category, product }) {
   }
 
   return (
-    <div className="rounded border border-white/10 bg-gray-900 p-3">
-      <p className="text-xs font-semibold uppercase text-blue-300">{category}</p>
+    <div className="border border-white/10 bg-[#111412] p-3">
+      <p className="section-label">{category}</p>
       <p className="mt-2 line-clamp-2 text-sm font-bold text-white">{product.name}</p>
       <p className="mt-2 text-sm font-semibold text-gray-300">${Number(product.price).toFixed(2)}</p>
     </div>
