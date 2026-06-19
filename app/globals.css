@@ -58,3 +58,30 @@ select:focus-visible {
   letter-spacing: 0;
   text-transform: uppercase;
 }
+
+.price-range {
+  appearance: none;
+  background: transparent;
+  pointer-events: none;
+}
+
+.price-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #090b0a;
+  border-radius: 50%;
+  background: var(--cyan);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.price-range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #090b0a;
+  border-radius: 50%;
+  background: var(--cyan);
+  cursor: pointer;
+  pointer-events: auto;
+}
