@@ -28,6 +28,7 @@ export default function Navbar() {
           <Link className="text-gray-300 hover:text-[#b7f34a]" href="/products">Components</Link>
           <Link className="text-gray-300 hover:text-[#b7f34a]" href="/#build-paths">Build paths</Link>
           <Link className="text-gray-300 hover:text-[#b7f34a]" href="/#how-it-works">How it works</Link>
+          {session && <Link className="text-gray-300 hover:text-[#b7f34a]" href="/builds">My builds</Link>}
           {session && <Link className="text-gray-300 hover:text-[#b7f34a]" href="/orders">Orders</Link>}
         </div>
 
@@ -61,6 +62,7 @@ export default function Navbar() {
           <Link href="/builder">Build a PC</Link>
           <Link href="/products">Components</Link>
           <Link href="/#build-paths">Build paths</Link>
+          {session && <Link href="/builds">My builds</Link>}
           {session && <Link href="/orders">Orders</Link>}
         </div>
       </div>

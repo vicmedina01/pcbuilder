@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { useMemo, useState } from "react"
+import { signIn, useSession } from "next-auth/react"
 import { builderCategories } from "@/lib/products"
 import { getCompatibilityReport, isCompatibleChoice } from "@/lib/compatibility"
 import { useCart } from "@/context/CartContext"
@@ -45,7 +46,12 @@ const BUDGETS = [
 
 export default function BuilderClient({ products }) {
   const { addToCart } = useCart()
+  const { data: session } = useSession()
   const [selection, setSelection] = useState({})
+  const [buildName, setBuildName] = useState("My PC Build")
+  const [isPublic, setIsPublic] = useState(false)
+  const [saveMessage, setSaveMessage] = useState("")
+  const [isSaving, setIsSaving] = useState(false)
   const [profile, setProfile] = useState({
     need: "gaming",
     budget: "balanced",
@@ -102,6 +108,54 @@ export default function BuilderClient({ products }) {
 
   function addBuildToCart() {
     Object.values(selection).forEach((product) => addToCart(product))
+  }
+
+  async function saveBuild() {
+    setSaveMessage("")
+
+    if (!session) {
+      signIn("google")
+      return
+    }
+
+    if (completedParts === 0) {
+      setSaveMessage("Select at least one component before saving.")
+      return
+    }
+
+    if (compatibility.status === "incompatible") {
+      setSaveMessage("Resolve compatibility errors before saving.")
+      return
+    }
+
+    setIsSaving(true)
+
+    try {
+      const response = await fetch("/api/builds", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: buildName,
+          purpose: profile.need,
+          resolution: profile.resolution,
+          fpsTarget: profile.fps,
+          budgetTier: profile.budget,
+          isPublic,
+          items: Object.entries(selection).map(([category, product]) => ({
+            category,
+            productId: product.id,
+          })),
+        }),
+      })
+      const data = await response.json()
+
+      setSaveMessage(response.ok ? "Build saved successfully." : data.error ?? "Build could not be saved.")
+    } catch (error) {
+      console.error(error)
+      setSaveMessage("Build could not be saved.")
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   return (
@@ -338,6 +392,37 @@ export default function BuilderClient({ products }) {
               <p className="text-sm leading-6 text-gray-400">Select a CPU and GPU to generate performance searches.</p>
             )}
           </div>
+        </div>
+
+        <div className="mt-5 border border-white/10 bg-[#111412] p-4">
+          <h3 className="font-semibold text-white">Save this build</h3>
+          <label className="mt-3 block">
+            <span className="sr-only">Build name</span>
+            <input
+              value={buildName}
+              onChange={(event) => setBuildName(event.target.value)}
+              maxLength={80}
+              className="w-full border border-white/15 bg-[#090b0a] px-3 py-2.5 text-sm text-white"
+            />
+          </label>
+          <label className="mt-3 flex items-center gap-2 text-sm text-gray-300">
+            <input
+              type="checkbox"
+              checked={isPublic}
+              onChange={(event) => setIsPublic(event.target.checked)}
+              className="size-4 accent-[#b7f34a]"
+            />
+            Allow public sharing
+          </label>
+          <button
+            type="button"
+            onClick={saveBuild}
+            disabled={isSaving}
+            className="mt-4 w-full border border-[#b7f34a]/50 px-4 py-3 text-sm font-black uppercase text-[#dfffa9] disabled:opacity-50"
+          >
+            {isSaving ? "Saving..." : session ? "Save build" : "Sign in to save"}
+          </button>
+          {saveMessage && <p className="mt-3 text-sm text-gray-300">{saveMessage}</p>}
         </div>
 
         <button
