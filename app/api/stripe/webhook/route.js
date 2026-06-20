@@ -24,11 +24,13 @@ export async function POST(request) {
 
   try {
     if (event.type === "checkout.session.completed") {
-      await updateOrderStatus(event.data.object, "PAID")
+      if (event.data.object.payment_status === "paid") {
+        await markOrderAsPaid(event.data.object)
+      }
     }
 
     if (event.type === "checkout.session.expired") {
-      await updateOrderStatus(event.data.object, "CANCELLED")
+      await cancelPendingOrder(event.data.object)
     }
 
     return Response.json({ received: true })
@@ -38,7 +40,67 @@ export async function POST(request) {
   }
 }
 
-async function updateOrderStatus(session, status) {
+async function markOrderAsPaid(session) {
+  const orderId = session.metadata?.orderId || session.client_reference_id
+
+  if (!orderId || !process.env.DATABASE_URL) {
+    return
+  }
+
+  const { prisma } = await import("@/lib/prisma")
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
+    include: { items: true },
+  })
+
+  if (!order) {
+    throw new Error(`Order ${orderId} was not found.`)
+  }
+
+  const expectedAmount = Math.round(Number(order.total) * 100)
+
+  if (session.currency !== "usd" || session.amount_total !== expectedAmount) {
+    throw new Error(`Payment amount validation failed for order ${orderId}.`)
+  }
+
+  await prisma.$transaction(async (transaction) => {
+    const currentOrder = await transaction.order.findUnique({
+      where: { id: orderId },
+      include: { items: true },
+    })
+
+    if (!currentOrder || currentOrder.status === "PAID") {
+      return
+    }
+
+    if (currentOrder.status !== "PENDING") {
+      throw new Error(`Order ${orderId} is not pending.`)
+    }
+
+    for (const item of currentOrder.items) {
+      const result = await transaction.product.updateMany({
+        where: {
+          id: item.productId,
+          stock: { gte: item.quantity },
+        },
+        data: {
+          stock: { decrement: item.quantity },
+        },
+      })
+
+      if (result.count !== 1) {
+        throw new Error(`Insufficient stock for product ${item.productId}.`)
+      }
+    }
+
+    await transaction.order.update({
+      where: { id: orderId },
+      data: { status: "PAID" },
+    })
+  })
+}
+
+async function cancelPendingOrder(session) {
   const orderId = session.metadata?.orderId || session.client_reference_id
 
   if (!orderId || !process.env.DATABASE_URL) {
@@ -47,8 +109,11 @@ async function updateOrderStatus(session, status) {
 
   const { prisma } = await import("@/lib/prisma")
 
-  await prisma.order.update({
-    where: { id: orderId },
-    data: { status },
+  await prisma.order.updateMany({
+    where: {
+      id: orderId,
+      status: "PENDING",
+    },
+    data: { status: "CANCELLED" },
   })
 }

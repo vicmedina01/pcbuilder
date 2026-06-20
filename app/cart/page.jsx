@@ -52,7 +52,7 @@ function CartContent() {
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items: cart, orderId: orderData.order.id }),
+        body: JSON.stringify({ orderId: orderData.order.id }),
       })
       const data = await response.json()
 
