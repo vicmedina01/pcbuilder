@@ -6,7 +6,7 @@ import { useCart } from "@/context/CartContext"
 
 export default function CartPage() {
   return (
-    <Suspense fallback={<main className="flex-1 p-6 text-white">Cargando carrito...</main>}>
+    <Suspense fallback={<main className="flex-1 p-6 text-white">Loading cart...</main>}>
       <CartContent />
     </Suspense>
   )
@@ -15,7 +15,7 @@ export default function CartPage() {
 function CartContent() {
   const { data: session } = useSession()
   const searchParams = useSearchParams()
-  const { cart, removeFromCart, updateQuantity, clearCart, total } = useCart()
+  const { cart, removeFromCart, updateQuantity, clearCart, total, isHydrated } = useCart()
   const [message, setMessage] = useState("")
   const [isCheckingOut, setIsCheckingOut] = useState(false)
   const checkoutStatus = searchParams.get("checkout")
@@ -45,7 +45,7 @@ function CartContent() {
       const orderData = await orderResponse.json()
 
       if (!orderResponse.ok) {
-        setMessage(orderData.error ?? "No se pudo crear la orden.")
+        setMessage(orderData.error ?? "The order could not be created.")
         return
       }
 
@@ -61,30 +61,34 @@ function CartContent() {
         return
       }
 
-      setMessage(data.error ?? "Checkout preparado en modo test. Configura Stripe para activar pagos.")
+      setMessage(data.error ?? "Checkout is running in test mode. Configure Stripe to enable payments.")
     } catch (error) {
       console.error(error)
-      setMessage("No se pudo iniciar el checkout. Intenta de nuevo.")
+      setMessage("Checkout could not be started. Please try again.")
     } finally {
       setIsCheckingOut(false)
     }
+  }
+
+  if (!isHydrated) {
+    return <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-10 text-gray-300 md:px-8">Loading cart...</main>
   }
 
   if (cart.length === 0) {
     return (
       <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-10 md:px-8">
         {searchParams.get("checkout") === "success" && (
-          <p className="mb-4 rounded border border-green-500/30 bg-green-500/10 p-4 text-green-200">
-            Pago completado. Gracias por tu compra.
+          <p className="mb-4 border border-green-500/30 bg-green-500/10 p-4 text-green-200">
+            Payment completed. Thank you for your purchase.
           </p>
         )}
         {searchParams.get("checkout") === "cancelled" && (
-          <p className="mb-4 rounded border border-yellow-500/30 bg-yellow-500/10 p-4 text-yellow-100">
-            Checkout cancelado. Puedes volver a intentarlo cuando quieras.
+          <p className="mb-4 border border-yellow-500/30 bg-yellow-500/10 p-4 text-yellow-100">
+            Checkout was cancelled. You can try again whenever you are ready.
           </p>
         )}
-        <h1 className="text-3xl font-bold text-white">Tu carrito esta vacio</h1>
-        <p className="mt-3 text-gray-300">Agrega componentes desde el catalogo o desde PC Builder.</p>
+        <h1 className="text-3xl font-black text-white">Your cart is empty</h1>
+        <p className="mt-3 text-gray-300">Add components from the catalog or guided PC Builder.</p>
       </main>
     )
   }
@@ -92,26 +96,27 @@ function CartContent() {
   return (
     <main className="mx-auto grid w-full max-w-6xl flex-1 gap-8 px-4 py-8 md:grid-cols-[1fr_360px] md:px-8">
       <section>
-        <h1 className="mb-6 text-3xl font-bold text-white">Tu carrito</h1>
+        <p className="section-label">Checkout</p>
+        <h1 className="mb-6 mt-3 text-4xl font-black text-white">Your cart</h1>
         <div className="grid gap-4">
           {cart.map((item) => (
-            <div key={item.id} className="rounded-lg border border-white/10 bg-gray-900 p-4 text-white">
+            <div key={item.id} className="border border-white/10 bg-[#111412] p-4 text-white">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="font-bold">{item.name}</p>
-                  <p className="text-sm text-gray-400">${item.price} cada uno</p>
+                  <p className="text-sm text-gray-400">${item.price} each</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <input
-                    aria-label={`Cantidad de ${item.name}`}
+                    aria-label={`Quantity of ${item.name}`}
                     type="number"
                     min="1"
                     value={item.quantity}
                     onChange={(event) => updateQuantity(item.id, event.target.value)}
-                    className="w-20 rounded border border-white/10 bg-gray-800 px-3 py-2 text-white"
+                    className="w-20 border border-white/10 bg-[#090b0a] px-3 py-2 text-white"
                   />
-                  <button onClick={() => removeFromCart(item.id)} className="rounded border border-red-500/40 px-3 py-2 text-sm text-red-300 hover:bg-red-500/10">
-                    Quitar
+                  <button onClick={() => removeFromCart(item.id)} className="border border-red-500/40 px-3 py-2 text-sm text-red-300 hover:bg-red-500/10">
+                    Remove
                   </button>
                 </div>
               </div>
@@ -120,27 +125,27 @@ function CartContent() {
         </div>
       </section>
 
-      <aside className="h-fit rounded-lg border border-white/10 bg-gray-900 p-5">
-        <h2 className="text-xl font-bold text-white">Resumen</h2>
+      <aside className="h-fit border border-white/10 bg-[#111412] p-5">
+        <h2 className="text-xl font-black text-white">Summary</h2>
         {checkoutStatus === "cancelled" && (
-          <p className="mt-4 rounded border border-yellow-500/30 bg-yellow-500/10 p-3 text-sm text-yellow-100">
-            Checkout cancelado. Revisa tu carrito e intenta de nuevo.
+          <p className="mt-4 border border-yellow-500/30 bg-yellow-500/10 p-3 text-sm text-yellow-100">
+            Checkout was cancelled. Review your cart and try again.
           </p>
         )}
         <div className="mt-5 flex justify-between border-b border-white/10 pb-4 text-gray-300">
           <span>Total</span>
           <span className="font-bold text-white">${total.toFixed(2)}</span>
         </div>
-        {message && <p className="mt-4 rounded border border-yellow-500/30 bg-yellow-500/10 p-3 text-sm text-yellow-100">{message}</p>}
+        {message && <p className="mt-4 border border-yellow-500/30 bg-yellow-500/10 p-3 text-sm text-yellow-100">{message}</p>}
         <button
           onClick={handleCheckout}
           disabled={isCheckingOut}
-          className="mt-5 w-full rounded bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-900"
+          className="mt-5 w-full bg-[#b7f34a] px-5 py-3 font-black uppercase text-black hover:bg-[#93d329] disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400"
         >
-          {isCheckingOut ? "Preparando..." : "Ir a checkout"}
+          {isCheckingOut ? "Preparing..." : "Continue to checkout"}
         </button>
-        <button onClick={clearCart} className="mt-3 w-full rounded border border-white/15 px-5 py-3 font-semibold text-white hover:border-white/40">
-          Vaciar carrito
+        <button onClick={clearCart} className="mt-3 w-full border border-white/15 px-5 py-3 font-semibold text-white hover:border-white/40">
+          Clear cart
         </button>
       </aside>
     </main>

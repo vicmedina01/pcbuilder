@@ -18,6 +18,23 @@ Use this checklist after deploying a new version to Vercel.
 - Update product quantity in the cart.
 - Remove a product from the cart.
 - Clear the cart.
+- Reload the page and confirm cart contents persist.
+
+## Compatibility
+
+- Select a CPU and confirm motherboards with a different socket are disabled.
+- Select DDR4 RAM and confirm DDR5-only motherboards are incompatible.
+- Select a high-end GPU and confirm an undersized PSU produces an error.
+- Confirm GPU, cooler, and radiator clearance messages use structured specifications.
+
+## Saved Builds
+
+- Sign in and save a partial or complete compatible build.
+- Open the saved builds page.
+- Toggle the build between private and public.
+- Copy the public URL and open it while signed out.
+- Confirm a private build cannot be viewed while signed out.
+- Delete the saved build.
 
 ## Authentication
 
@@ -40,6 +57,8 @@ Use this checklist after deploying a new version to Vercel.
 - With Stripe test keys configured, confirm checkout redirects to Stripe.
 - Complete a test checkout.
 - Confirm the Stripe webhook updates the order status.
+- Confirm product stock is decremented once after payment.
+- Resend the completed webhook and confirm stock is not decremented again.
 - Cancel or expire a checkout session and confirm the order can be marked cancelled.
 
 ## Deployment

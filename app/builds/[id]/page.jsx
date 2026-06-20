@@ -44,7 +44,7 @@ export default async function SharedBuildPage({ params }) {
         {build.items.map((item) => (
           <article key={item.id} className="border border-white/10 bg-[#111412]">
             <div className="relative aspect-[4/3] bg-[#f2f4f0]">
-              <Image src={item.product.image} alt={item.product.name} fill unoptimized className="object-contain p-6" />
+              <Image src={item.product.image} alt={item.product.name} fill sizes="(min-width: 1024px) 33vw, 50vw" className="object-contain p-6" />
             </div>
             <div className="p-4">
               <p className="section-label">{item.category}</p>

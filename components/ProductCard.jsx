@@ -18,7 +18,6 @@ export default function ProductCard({ id, name, description, price, category, im
             src={image}
             alt={name}
             fill
-            unoptimized
             sizes="170px"
             className="object-contain p-5 transition-transform duration-300 group-hover:scale-105"
           />
@@ -57,7 +56,6 @@ export default function ProductCard({ id, name, description, price, category, im
             src={image}
             alt={name}
             fill
-            unoptimized
             sizes="(min-width: 1280px) 22vw, (min-width: 640px) 40vw, 100vw"
             className="object-contain p-8 transition-transform duration-300 group-hover:scale-105"
           />

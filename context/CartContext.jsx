@@ -1,12 +1,41 @@
 "use client"
-import { createContext, useContext, useMemo, useState } from "react"
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
 
 const CartContext = createContext()
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([])
+  const [isHydrated, setIsHydrated] = useState(false)
 
-  function addToCart(product) {
+  useEffect(() => {
+    let active = true
+    let restoredCart = []
+
+    try {
+      const savedCart = window.localStorage.getItem("pcbuilder-cart")
+      if (savedCart) restoredCart = JSON.parse(savedCart)
+    } catch (error) {
+      console.warn("Saved cart could not be restored.", error)
+    }
+
+    queueMicrotask(() => {
+      if (!active) return
+      setCart(restoredCart)
+      setIsHydrated(true)
+    })
+
+    return () => {
+      active = false
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isHydrated) {
+      window.localStorage.setItem("pcbuilder-cart", JSON.stringify(cart))
+    }
+  }, [cart, isHydrated])
+
+  const addToCart = useCallback((product) => {
     setCart((prev) => {
       const existing = prev.find((item) => item.id === product.id)
       if (existing) {
@@ -16,38 +45,40 @@ export function CartProvider({ children }) {
       }
       return [...prev, { ...product, quantity: 1 }]
     })
-  }
+  }, [])
 
-  function removeFromCart(id) {
+  const removeFromCart = useCallback((id) => {
     setCart((prev) => prev.filter((item) => item.id !== id))
-  }
+  }, [])
 
-  function updateQuantity(id, quantity) {
+  const updateQuantity = useCallback((id, quantity) => {
     const nextQuantity = Number(quantity)
 
     if (nextQuantity <= 0) {
-      removeFromCart(id)
+      setCart((prev) => prev.filter((item) => item.id !== id))
       return
     }
 
     setCart((prev) =>
       prev.map((item) => (item.id === id ? { ...item, quantity: nextQuantity } : item))
     )
-  }
+  }, [])
 
-  function clearCart() {
+  const clearCart = useCallback(() => {
     setCart([])
-  }
+  }, [])
 
   const total = useMemo(
     () => cart.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0),
     [cart]
   )
+  const value = useMemo(
+    () => ({ cart, addToCart, removeFromCart, updateQuantity, clearCart, total, isHydrated }),
+    [addToCart, cart, clearCart, isHydrated, removeFromCart, total, updateQuantity]
+  )
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, total }}>
-      {children}
-    </CartContext.Provider>
+    <CartContext.Provider value={value}>{children}</CartContext.Provider>
   )
 }
 

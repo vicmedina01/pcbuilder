@@ -319,7 +319,6 @@ export default function BuilderClient({ products }) {
                             fill
                             sizes="120px"
                             className="object-contain p-2"
-                            unoptimized
                           />
                         )}
                       </div>

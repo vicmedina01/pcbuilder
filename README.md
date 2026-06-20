@@ -1,199 +1,159 @@
-# PC Builder
+# PCBuilder
 
-PC Builder is a fullstack ecommerce project for browsing PC components, building a custom PC setup, managing a cart, signing in with Google, and preparing an order checkout flow.
-
-This project was built as a first fullstack portfolio project to practice how a modern Next.js app connects frontend UI, backend route handlers, authentication, database models, and payment preparation in one codebase.
+PCBuilder is a fullstack ecommerce and recommendation platform for creating custom PCs around a real workload. Users can browse components, receive guided recommendations for gaming, AI, or workstation use, validate compatibility, save and share builds, and complete an authenticated Stripe checkout.
 
 ## Live Demo
 
-https://pcbuilder-olive.vercel.app
+**[pcbuilder-olive.vercel.app](https://pcbuilder-olive.vercel.app)**
+
+The catalog and guided builder can be explored without an account. Google sign-in is required to create orders or save builds. Stripe runs with test credentials when configured.
+
+## Why This Project
+
+Most component catalogs expect users to already understand hardware. PCBuilder starts with the intended result: resolution, FPS target, games, AI workloads, or creative work. It then recommends components, explains tradeoffs, checks compatibility, and creates targeted YouTube benchmark searches for the selected CPU/GPU combination.
+
+## Main Features
+
+- Guided builds for gaming, AI/ML, and workstation use
+- Structured compatibility checks for socket, RAM, PSU, case, GPU, and cooling
+- Incompatible component options disabled before selection
+- Searchable catalog with technical filters, sorting, grid view, and list view
+- Persistent cart using React Context and local storage
+- Google OAuth authentication with NextAuth
+- Saved private builds and publicly shareable build URLs
+- Server-validated orders and Stripe Checkout sessions
+- Signed Stripe webhooks with amount validation and idempotent stock updates
+- Authenticated order history
+- PostgreSQL migrations and reusable product seed
+- Automated unit tests and GitHub Actions CI
+- Responsive UI, loading state, error boundary, 404 page, sitemap, and social metadata
 
 ## Tech Stack
 
-- Next.js App Router
-- React
-- Tailwind CSS
-- React Context API for cart state
-- Next.js Route Handlers for backend endpoints
-- NextAuth.js with Google OAuth
-- Prisma ORM
-- PostgreSQL hosted on Supabase
-- Stripe checkout preparation
-- Vercel deployment target
+| Area | Technology |
+| --- | --- |
+| Frontend | Next.js App Router, React, Tailwind CSS |
+| Backend | Next.js Route Handlers |
+| Database | PostgreSQL on Supabase |
+| ORM | Prisma |
+| Authentication | NextAuth with Google OAuth |
+| Payments | Stripe Checkout and webhooks |
+| State | React Context API and local storage |
+| Testing | Node.js test runner |
+| CI/CD | GitHub Actions and Vercel |
 
-## Features
+## Architecture
 
-- Product catalog with component cards
-- Product detail pages
-- Cart state using React Context
-- Add, remove, update quantity, and clear cart actions
-- PC Builder page to select parts by category
-- Basic build notes for missing parts and compatibility reminders
-- Google sign-in with NextAuth
-- Order history page for signed-in users
-- Prisma ecommerce models for products, users, orders, and order items
-- Backend routes for products, orders, and checkout
-- Local fallback product data when the database is unavailable
-- Stripe checkout route prepared for test/production credentials
-- Checkout sessions include order metadata for future webhook handling
-- Stripe webhook route can update orders to `PAID` or `CANCELLED`
-- Production build verified with Next.js
-
-## Project Structure
-
-```text
-app/
-  api/
-    auth/[...nextauth]/
-    checkout/
-    orders/
-    products/
-  builder/
-  cart/
-  products/
-components/
-context/
-lib/
-prisma/
+```mermaid
+flowchart LR
+  UI[Next.js UI] --> API[Route Handlers]
+  UI --> Context[Cart Context]
+  API --> Auth[NextAuth]
+  API --> Prisma[Prisma ORM]
+  Prisma --> DB[(Supabase PostgreSQL)]
+  API --> Stripe[Stripe Checkout]
+  Stripe --> Webhook[Signed Webhook]
+  Webhook --> Prisma
 ```
 
-## Getting Started
+Server Components load products, orders, and saved builds close to the database. Client Components are limited to interactive workflows such as filters, cart state, builder selections, and account actions.
 
-Install dependencies:
+## Compatibility Model
+
+Product specifications are stored as structured database fields instead of being inferred only from display names. Current checks include:
+
+- CPU socket against motherboard socket
+- RAM generation against motherboard memory type
+- Motherboard form factor against case support
+- GPU recommended PSU wattage
+- GPU length against case clearance
+- CPU cooler socket support
+- Air cooler height against case clearance
+- Radiator size against case support
+
+The compatibility engine lives in [`lib/compatibility.js`](lib/compatibility.js) and is independent from the UI so it can be tested and reused by API routes.
+
+## Payment Security
+
+The browser never defines the Stripe price. Checkout receives an authenticated `orderId`, loads the order and price snapshots from PostgreSQL, verifies ownership and stock, and creates Stripe line items on the server.
+
+The webhook verifies:
+
+- Stripe signature
+- Payment status
+- Currency and expected total
+- Pending order state
+- Available stock
+- Idempotency before decrementing inventory
+
+## Database Models
+
+- `Product`: catalog data, stock, and structured hardware specifications
+- `User`: authenticated customer profile
+- `Order` and `OrderItem`: checkout price snapshots and payment state
+- `Build` and `BuildItem`: saved configurations, visibility, and selected components
+
+## Local Setup
 
 ```bash
 npm install
-```
-
-Generate the Prisma client:
-
-```bash
-npm run postinstall
-```
-
-Run the development server:
-
-```bash
+cp .env.example .env.local
 npm run dev
 ```
 
-Open the app at:
+Open `http://localhost:3000`.
 
-```text
-http://localhost:3000
-```
-
-## Environment Variables
-
-Copy `.env.example` into `.env.local` and add the required values:
-
-```bash
-cp .env.example .env.local
-```
-
-For local development:
+Required environment variables:
 
 ```env
-DATABASE_URL="your_supabase_database_url"
-DIRECT_URL="your_supabase_direct_database_url"
-
+DATABASE_URL="postgresql_connection_string"
 NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="your_nextauth_secret"
-
-GOOGLE_CLIENT_ID="your_google_client_id"
-GOOGLE_CLIENT_SECRET="your_google_client_secret"
-
-STRIPE_SECRET_KEY="your_stripe_secret_key"
-STRIPE_WEBHOOK_SECRET="your_stripe_webhook_secret"
+NEXTAUTH_SECRET="generated_secret"
+GOOGLE_CLIENT_ID="google_client_id"
+GOOGLE_CLIENT_SECRET="google_client_secret"
+STRIPE_SECRET_KEY="stripe_test_secret"
+STRIPE_WEBHOOK_SECRET="stripe_webhook_secret"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 ```
 
-For Vercel production, set these in the Vercel dashboard:
-
-```env
-NEXTAUTH_URL="https://pcbuilder-olive.vercel.app"
-NEXT_PUBLIC_APP_URL="https://pcbuilder-olive.vercel.app"
-```
-
-Stripe is optional while developing. If `STRIPE_SECRET_KEY` is missing, the checkout route returns a clear configuration message instead of crashing the app.
-
-For Stripe webhooks, configure this endpoint in Stripe:
-
-```text
-https://pcbuilder-olive.vercel.app/api/stripe/webhook
-```
-
-Listen for:
-
-- `checkout.session.completed`
-- `checkout.session.expired`
-
-## Deployment
-
-The project is deployed on Vercel from the `main` branch. Production environment variables are configured in the Vercel dashboard, while local development uses `.env.local`.
-
-For Google OAuth in production, the authorized redirect URI must include:
-
-```text
-https://pcbuilder-olive.vercel.app/api/auth/callback/google
-```
-
-## Database
-
-The database is modeled with Prisma and PostgreSQL. The main models are:
-
-- `Product`
-- `User`
-- `Order`
-- `OrderItem`
-
-Run migrations with:
+Apply migrations and seed products:
 
 ```bash
-npx prisma migrate dev
-```
-
-Seed product data with:
-
-```bash
+npx prisma migrate deploy
 npm run db:seed
 ```
 
-Generate Prisma client after schema changes:
+## Quality Checks
 
 ```bash
-npx prisma generate
-```
-
-## Scripts
-
-```bash
-npm run dev
-npm run lint
-npm run build
-npm run start
-npm run db:seed
-```
-
-## Testing
-
-Before deploying, run:
-
-```bash
+npm test
 npm run lint
 npm run build
 ```
 
-For production checks, use the manual checklist in [`docs/manual-testing.md`](docs/manual-testing.md).
+GitHub Actions runs the same checks on pushes to `main` and pull requests. A manual production checklist is available in [`docs/manual-testing.md`](docs/manual-testing.md).
 
-## Current Status
+## Demo Flow
 
-The project currently includes the main ecommerce flow, cart, basic PC builder, authentication setup, Prisma models, and backend routes. Stripe is prepared, but real payments require valid Stripe credentials.
+1. Select Gaming, AI/ML, or Workstation in the guided builder.
+2. Choose resolution, FPS, budget, and games.
+3. Apply the recommended build or replace individual components.
+4. Review compatibility and benchmark searches.
+5. Sign in to save the build, make it public, and copy its URL.
+6. Add the configuration to the cart and start Stripe test checkout.
+7. Review the resulting order status in Order History.
 
-## Future Improvements
+## Current Limitations
 
-- Add product management from the database instead of only local fallback data
-- Add deeper PC part compatibility checks
-- Add richer Stripe payment states and webhook event coverage
-- Improve loading and error states
-- Add tests for cart and API routes
+- Performance recommendations are heuristic rather than benchmark-dataset driven.
+- Product prices represent the demo catalog and are not synchronized with retailers.
+- Google OAuth and Stripe require valid provider credentials.
+- The admin product-management interface is planned but not yet implemented.
+
+## Next Improvements
+
+- Admin dashboard for catalog, stock, and featured products
+- URL-synchronized catalog filters and pagination
+- Broader API integration and end-to-end tests
+- Benchmark dataset for estimated FPS and AI workload scoring
+- Observability and error monitoring
