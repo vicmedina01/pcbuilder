@@ -1,6 +1,7 @@
 import Stripe from "stripe"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import { calculateSnapshotTotal } from "@/lib/orderRules"
 
 export async function POST(request) {
   const session = await getServerSession(authOptions)
@@ -53,10 +54,7 @@ export async function POST(request) {
     )
   }
 
-  const calculatedTotal = order.items.reduce(
-    (sum, item) => sum + Number(item.price) * item.quantity,
-    0
-  )
+  const calculatedTotal = calculateSnapshotTotal(order.items)
 
   if (Math.abs(calculatedTotal - Number(order.total)) > 0.001) {
     return Response.json({ error: "Order total validation failed." }, { status: 409 })

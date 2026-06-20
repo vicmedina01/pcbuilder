@@ -1,5 +1,6 @@
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import { calculateOrderTotal, normalizeCartItems } from "@/lib/orderRules"
 
 export async function POST(request) {
   const session = await getServerSession(authOptions)
@@ -15,24 +16,13 @@ export async function POST(request) {
   const body = await request.json()
   const items = Array.isArray(body.items) ? body.items : []
 
-  if (items.length === 0) {
-    return Response.json({ error: "Cart is empty." }, { status: 400 })
+  let normalizedItems
+
+  try {
+    normalizedItems = normalizeCartItems(items)
+  } catch (error) {
+    return Response.json({ error: error.message }, { status: 400 })
   }
-
-  const quantityByProduct = new Map()
-
-  for (const item of items) {
-    const id = Number(item.id)
-    const quantity = Number(item.quantity)
-
-    if (!Number.isInteger(id) || id <= 0 || !Number.isInteger(quantity) || quantity <= 0) {
-      return Response.json({ error: "Cart contains invalid product data." }, { status: 400 })
-    }
-
-    quantityByProduct.set(id, (quantityByProduct.get(id) ?? 0) + quantity)
-  }
-
-  const normalizedItems = Array.from(quantityByProduct, ([id, quantity]) => ({ id, quantity }))
 
   const { prisma } = await import("@/lib/prisma")
   const products = await prisma.product.findMany({
@@ -53,10 +43,7 @@ export async function POST(request) {
     )
   }
 
-  const total = normalizedItems.reduce((sum, item) => {
-    const product = productMap.get(item.id)
-    return sum + Number(product.price) * item.quantity
-  }, 0)
+  const total = calculateOrderTotal(normalizedItems, productMap)
 
   const order = await prisma.$transaction(async (transaction) => {
     const user = await transaction.user.upsert({

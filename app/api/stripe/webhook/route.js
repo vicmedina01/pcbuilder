@@ -1,4 +1,5 @@
 import Stripe from "stripe"
+import { paymentMatchesOrder } from "@/lib/orderRules"
 
 export async function POST(request) {
   if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET) {
@@ -57,9 +58,7 @@ async function markOrderAsPaid(session) {
     throw new Error(`Order ${orderId} was not found.`)
   }
 
-  const expectedAmount = Math.round(Number(order.total) * 100)
-
-  if (session.currency !== "usd" || session.amount_total !== expectedAmount) {
+  if (!paymentMatchesOrder(order.total, session)) {
     throw new Error(`Payment amount validation failed for order ${orderId}.`)
   }
 
