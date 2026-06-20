@@ -8,6 +8,36 @@ const { Pool } = pg
 const currentDir = path.dirname(fileURLToPath(import.meta.url))
 const productsPath = path.join(currentDir, "..", "lib", "products.json")
 const products = JSON.parse(await readFile(productsPath, "utf8"))
+const productColumns = [
+  "id",
+  "name",
+  "description",
+  "price",
+  "category",
+  "image",
+  "stock",
+  "brand",
+  "socket",
+  "chipset",
+  "formFactor",
+  "memoryType",
+  "capacityGb",
+  "storageType",
+  "wattage",
+  "tdp",
+  "vramGb",
+  "lengthMm",
+  "coolerHeightMm",
+  "radiatorSize",
+  "recommendedPsu",
+  "overclockable",
+  "maxGpuLengthMm",
+  "maxCoolerHeightMm",
+  "supportedSockets",
+  "supportedFormFactors",
+  "supportedRadiatorSizes",
+  "featured",
+]
 
 if (!process.env.DATABASE_URL) {
   throw new Error("DATABASE_URL is required to seed products")
@@ -19,20 +49,22 @@ const pool = new Pool({
 
 try {
   for (const product of products) {
+    const quotedColumns = productColumns.map((column) => `"${column}"`).join(", ")
+    const placeholders = productColumns.map((_, index) => `$${index + 1}`).join(", ")
+    const updates = productColumns
+      .filter((column) => column !== "id")
+      .map((column) => `"${column}" = EXCLUDED."${column}"`)
+      .join(",\n          ")
+
     await pool.query(
       `
-        INSERT INTO "Product" ("id", "name", "description", "price", "category", "image", "stock", "updatedAt")
-        VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
+        INSERT INTO "Product" (${quotedColumns}, "updatedAt")
+        VALUES (${placeholders}, NOW())
         ON CONFLICT ("id") DO UPDATE SET
-          "name" = EXCLUDED."name",
-          "description" = EXCLUDED."description",
-          "price" = EXCLUDED."price",
-          "category" = EXCLUDED."category",
-          "image" = EXCLUDED."image",
-          "stock" = EXCLUDED."stock",
+          ${updates},
           "updatedAt" = NOW()
       `,
-      [product.id, product.name, product.description, product.price, product.category, product.image, product.stock]
+      productColumns.map((column) => product[column])
     )
   }
 

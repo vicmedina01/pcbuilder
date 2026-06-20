@@ -8,16 +8,37 @@ datasource db {
 }
 
 model Product {
-  id          Int         @id @default(autoincrement())
-  name        String
-  description String?
-  price       Decimal     @db.Decimal(10, 2)
-  category    String
-  image       String?
-  stock       Int         @default(0)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  orderItems  OrderItem[]
+  id                     Int         @id @default(autoincrement())
+  name                   String
+  description            String?
+  price                  Decimal     @db.Decimal(10, 2)
+  category               String
+  image                  String?
+  stock                  Int         @default(0)
+  brand                  String?
+  socket                 String?
+  chipset                String?
+  formFactor             String?
+  memoryType             String?
+  capacityGb             Int?
+  storageType            String?
+  wattage                Int?
+  tdp                    Int?
+  vramGb                 Int?
+  lengthMm               Int?
+  coolerHeightMm         Int?
+  radiatorSize           Int?
+  recommendedPsu         Int?
+  overclockable          Boolean?
+  maxGpuLengthMm         Int?
+  maxCoolerHeightMm      Int?
+  supportedSockets       String[]    @default([])
+  supportedFormFactors   String[]    @default([])
+  supportedRadiatorSizes Int[]       @default([])
+  featured               Boolean     @default(false)
+  createdAt              DateTime    @default(now())
+  updatedAt              DateTime    @updatedAt
+  orderItems             OrderItem[]
 }
 
 model User {

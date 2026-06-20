@@ -3,6 +3,7 @@
 import Image from "next/image"
 import { useMemo, useState } from "react"
 import { builderCategories } from "@/lib/products"
+import { getCompatibilityReport, isCompatibleChoice } from "@/lib/compatibility"
 import { useCart } from "@/context/CartContext"
 
 const NEEDS = [
@@ -61,7 +62,8 @@ export default function BuilderClient({ products }) {
   const completedParts = Object.keys(selection).length
   const missingParts = builderCategories.filter((category) => !selection[category])
   const recommendations = useMemo(() => getRecommendations(products, profile), [products, profile])
-  const buildNotes = getBuildNotes(selection, missingParts, profile, recommendations)
+  const compatibility = useMemo(() => getCompatibilityReport(selection), [selection])
+  const buildNotes = getBuildNotes(selection, missingParts, profile, recommendations, compatibility)
   const performanceLinks = getPerformanceLinks(selection, profile)
   const selectedBudget = BUDGETS.find((budget) => budget.id === profile.budget)
   const budgetStatus = selectedBudget?.max === Infinity ? "Flexible" : `$${selectedBudget?.max}`
@@ -231,11 +233,15 @@ export default function BuilderClient({ products }) {
                       className="w-full rounded border border-white/10 bg-gray-800 px-3 py-3 text-white"
                     >
                       <option value="">Select component</option>
-                      {options.map((product) => (
-                        <option key={product.id} value={product.id}>
-                          {product.name} - ${product.price}
-                        </option>
-                      ))}
+                      {options.map((product) => {
+                        const compatible = isCompatibleChoice(selection, category, product)
+
+                        return (
+                          <option key={product.id} value={product.id} disabled={!compatible}>
+                            {product.name} - ${product.price}{compatible ? "" : " - incompatible"}
+                          </option>
+                        )
+                      })}
                     </select>
 
                     {recommended && (
@@ -278,7 +284,12 @@ export default function BuilderClient({ products }) {
       </section>
 
       <aside className="h-fit border border-white/10 bg-[#0d100e] p-5 xl:sticky xl:top-32">
-        <h2 className="text-xl font-bold text-white">Build summary</h2>
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="text-xl font-bold text-white">Build summary</h2>
+          <span className={`px-2 py-1 text-xs font-black uppercase ${getCompatibilityClasses(compatibility.status)}`}>
+            {compatibility.status}
+          </span>
+        </div>
         <p className="mt-2 text-sm text-gray-400">
           {completedParts} of {builderCategories.length} parts selected
         </p>
@@ -456,7 +467,7 @@ function scoreProduct(product, profile, budgetMax) {
   return score
 }
 
-function getBuildNotes(selection, missingParts, profile, recommendations) {
+function getBuildNotes(selection, missingParts, profile, recommendations, compatibility) {
   const notes = []
   const gpu = selection.GPU
   const cpu = selection.CPU
@@ -490,8 +501,10 @@ function getBuildNotes(selection, missingParts, profile, recommendations) {
   }
 
   if (cpu && selection.Motherboard) {
-    notes.push("CPU and motherboard are selected. Verify socket and BIOS compatibility.")
+    notes.push("CPU and motherboard socket compatibility was checked.")
   }
+
+  compatibility.issues.forEach((issue) => notes.push(issue.message))
 
   return notes
 }
@@ -513,4 +526,10 @@ function getPerformanceLinks(selection, profile) {
 
 function matchAny(value, terms) {
   return terms.some((term) => value.includes(term))
+}
+
+function getCompatibilityClasses(status) {
+  if (status === "incompatible") return "bg-red-500/15 text-red-200"
+  if (status === "warning") return "bg-yellow-500/15 text-yellow-100"
+  return "bg-[#b7f34a]/15 text-[#dfffa9]"
 }

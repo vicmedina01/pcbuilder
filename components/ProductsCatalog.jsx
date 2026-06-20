@@ -429,31 +429,16 @@ function sortProducts(a, b, sort, query) {
 }
 
 function getProductSpecs(product) {
-  const name = product.name.toLowerCase()
-  const description = product.description?.toLowerCase() ?? ""
-  const text = `${name} ${description}`
+  const coolerType = product.radiatorSize
+    ? `Liquid Cooler (${product.radiatorSize}mm)`
+    : product.category === "Cooling"
+      ? "Air Cooler"
+      : null
 
-  let socket = null
-  if (text.includes("am5") || /(b650|x670e)/.test(text)) socket = "AM5"
-  if (text.includes("lga1700") || /(b760|z790|14\d{3}k)/.test(text)) socket = "LGA1700"
-  if (text.includes("core ultra")) socket = "LGA1851"
-
-  const overclocked = product.category === "CPU" && /(\d+x3d|\d+x|\d+k)$/.test(name)
-
-  let caseType = null
-  if (product.category === "Case") {
-    if (text.includes("mini-itx")) caseType = "Mini ITX"
-    else if (text.includes("compact") || text.includes("compacto")) caseType = "Compact ATX"
-    else caseType = "ATX Mid Tower"
+  return {
+    socket: product.socket,
+    overclocked: product.overclockable,
+    caseType: product.formFactor,
+    coolerType,
   }
-
-  let coolerType = null
-  if (product.category === "Cooling") {
-    if (text.includes("240mm")) coolerType = "Liquid Cooler (240mm)"
-    else if (text.includes("280mm")) coolerType = "Liquid Cooler (280mm)"
-    else if (text.includes("360mm")) coolerType = "Liquid Cooler (360mm)"
-    else coolerType = "Air Cooler"
-  }
-
-  return { socket, overclocked, caseType, coolerType }
 }
