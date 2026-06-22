@@ -8,6 +8,26 @@ PCBuilder is a fullstack ecommerce and recommendation platform for creating cust
 
 The catalog and guided builder can be explored without an account. Google sign-in is required to create orders or save builds. Stripe runs with test credentials when configured.
 
+## Product Preview
+
+### Guided PC Builder
+
+Choose the workload, performance target, budget, and games to receive a balanced starting point with compatibility feedback.
+
+![PCBuilder guided build recommendations](docs/screenshots/guided-builder.png)
+
+### Component Selection
+
+Review every required part, replace individual recommendations, see the estimated total, and save or add the completed build to the cart.
+
+![PCBuilder component selection and build summary](docs/screenshots/component-selection.png)
+
+### Component Catalog
+
+Browse 80 seeded components using category tabs, search, technical filters, sorting, and grid or list layouts.
+
+![PCBuilder component catalog with filters](docs/screenshots/component-catalog.png)
+
 ## Why This Project
 
 Most component catalogs expect users to already understand hardware. PCBuilder starts with the intended result: resolution, FPS target, games, AI workloads, or creative work. It then recommends components, explains tradeoffs, checks compatibility, and creates targeted YouTube benchmark searches for the selected CPU/GPU combination.
