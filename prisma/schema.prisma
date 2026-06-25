@@ -47,6 +47,7 @@ model User {
   name      String?
   email     String   @unique
   image     String?
+  role      UserRole @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   orders    Order[]
@@ -105,4 +106,9 @@ enum OrderStatus {
   PAID
   CANCELLED
   COMPLETED
+}
+
+enum UserRole {
+  USER
+  ADMIN
 }

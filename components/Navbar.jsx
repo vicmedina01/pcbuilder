@@ -30,6 +30,7 @@ export default function Navbar() {
           <Link className="text-gray-300 hover:text-[#b7f34a]" href="/#how-it-works">How it works</Link>
           {session && <Link className="text-gray-300 hover:text-[#b7f34a]" href="/builds">My builds</Link>}
           {session && <Link className="text-gray-300 hover:text-[#b7f34a]" href="/orders">Orders</Link>}
+          {session?.user?.role === "ADMIN" && <Link className="text-gray-300 hover:text-[#b7f34a]" href="/admin">Admin</Link>}
         </div>
 
         <div className="flex shrink-0 items-center gap-2 text-sm">
@@ -64,6 +65,7 @@ export default function Navbar() {
           <Link href="/#build-paths">Build paths</Link>
           {session && <Link href="/builds">My builds</Link>}
           {session && <Link href="/orders">Orders</Link>}
+          {session?.user?.role === "ADMIN" && <Link href="/admin">Admin</Link>}
         </div>
       </div>
     </header>
