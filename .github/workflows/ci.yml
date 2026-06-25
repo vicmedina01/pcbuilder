@@ -37,3 +37,31 @@ jobs:
 
       - name: Build application
         run: npm run build
+
+  e2e:
+    runs-on: ubuntu-latest
+    env:
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: ci-only-secret
+      GOOGLE_CLIENT_ID: ci-client
+      GOOGLE_CLIENT_SECRET: ci-secret
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run end-to-end tests
+        run: npm run test:e2e

@@ -5,11 +5,12 @@ import { useCart } from "@/context/CartContext"
 
 export default function ProductDetails({ product }) {
   const { addToCart } = useCart()
+  const isAvailable = Number(product.stock) > 0
 
   return (
     <main className="mx-auto grid w-full max-w-7xl flex-1 gap-10 px-4 py-12 md:grid-cols-2 md:px-8 md:py-20">
       <div className="relative aspect-square overflow-hidden bg-[#f2f4f0]">
-        <Image src={product.image} alt={product.name} fill priority sizes="(min-width: 768px) 50vw, 100vw" className="object-contain p-8" />
+        <Image src={product.image} alt={product.name} fill loading="eager" sizes="(min-width: 768px) 50vw, 100vw" className="object-contain p-8" />
       </div>
       <section>
         <p className="section-label">{product.category}</p>
@@ -22,9 +23,10 @@ export default function ProductDetails({ product }) {
         </div>
         <button
           onClick={() => addToCart(product)}
-          className="mt-8 w-full bg-[#b7f34a] px-6 py-4 text-sm font-black uppercase text-black hover:bg-[#93d329] md:w-auto"
+          disabled={!isAvailable}
+          className="mt-8 min-h-12 w-full bg-[#b7f34a] px-6 py-4 text-sm font-black uppercase text-black hover:bg-[#93d329] disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400 md:w-auto"
         >
-          Add to cart
+          {isAvailable ? "Add to cart" : "Out of stock"}
         </button>
       </section>
     </main>

@@ -27,9 +27,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col antialiased">
+        <a href="#main-content" className="skip-link">Skip to main content</a>
         <Providers>
           <Navbar />
-          {children}
+          <div id="main-content" className="contents">
+            {children}
+          </div>
           <Footer />
         </Providers>
       </body>

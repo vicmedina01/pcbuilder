@@ -1,6 +1,8 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { Grid3X3, List } from "lucide-react"
 import ProductCard from "@/components/ProductCard"
 
 const categories = ["All", "CPU", "GPU", "Motherboard", "RAM", "Storage", "PSU", "Case", "Cooling"]
@@ -19,6 +21,9 @@ const sortOptions = [
 ]
 
 export default function ProductsCatalog({ products }) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
   const priceLimits = useMemo(() => {
     const prices = products.map((product) => Number(product.price))
     return { min: Math.floor(Math.min(...prices)), max: Math.ceil(Math.max(...prices)) }
@@ -29,20 +34,22 @@ export default function ProductsCatalog({ products }) {
     [products]
   )
 
-  const [category, setCategory] = useState("All")
-  const [query, setQuery] = useState("")
-  const [sort, setSort] = useState("relevance")
-  const [viewMode, setViewMode] = useState("grid")
+  const [category, setCategory] = useState(() => validOption(searchParams.get("category"), categories, "All"))
+  const [query, setQuery] = useState(() => searchParams.get("q") ?? "")
+  const [sort, setSort] = useState(() => validOption(searchParams.get("sort"), sortOptions.map(([value]) => value), "relevance"))
+  const [viewMode, setViewMode] = useState(() => validOption(searchParams.get("view"), ["grid", "list"], "grid"))
   const [filtersOpen, setFiltersOpen] = useState(false)
-  const [priceMin, setPriceMin] = useState(priceLimits.min)
-  const [priceMax, setPriceMax] = useState(priceLimits.max)
-  const [availability, setAvailability] = useState("all")
-  const [overclocked, setOverclocked] = useState("all")
-  const [sockets, setSockets] = useState([])
-  const [gpuModels, setGpuModels] = useState([])
-  const [caseTypes, setCaseTypes] = useState([])
-  const [coolerTypes, setCoolerTypes] = useState([])
+  const [priceMin, setPriceMin] = useState(() => validPrice(searchParams.get("min"), priceLimits.min, priceLimits))
+  const [priceMax, setPriceMax] = useState(() => validPrice(searchParams.get("max"), priceLimits.max, priceLimits))
+  const [availability, setAvailability] = useState(() => validOption(searchParams.get("availability"), ["all", "in-stock", "low-stock"], "all"))
+  const [overclocked, setOverclocked] = useState(() => validOption(searchParams.get("overclocked"), ["all", "true", "false"], "all"))
+  const [sockets, setSockets] = useState(() => readList(searchParams, "socket"))
+  const [gpuModels, setGpuModels] = useState(() => readList(searchParams, "gpu"))
+  const [caseTypes, setCaseTypes] = useState(() => readList(searchParams, "case"))
+  const [coolerTypes, setCoolerTypes] = useState(() => readList(searchParams, "cooler"))
+  const [page, setPage] = useState(() => Math.max(1, Number(searchParams.get("page")) || 1))
   const [expandedGroups, setExpandedGroups] = useState({ gpu: false })
+  const pageSize = viewMode === "grid" ? 12 : 10
 
   const filteredProducts = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase()
@@ -106,9 +113,51 @@ export default function ProductsCatalog({ products }) {
     gpuModels.length +
     caseTypes.length +
     coolerTypes.length
+  const pageCount = Math.max(1, Math.ceil(filteredProducts.length / pageSize))
+  const currentPage = Math.min(page, pageCount)
+  const visibleProducts = filteredProducts.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+
+  useEffect(() => {
+    const params = new URLSearchParams()
+    setOptionalParam(params, "category", category, "All")
+    setOptionalParam(params, "q", query.trim(), "")
+    setOptionalParam(params, "sort", sort, "relevance")
+    setOptionalParam(params, "view", viewMode, "grid")
+    setOptionalParam(params, "min", priceMin, priceLimits.min)
+    setOptionalParam(params, "max", priceMax, priceLimits.max)
+    setOptionalParam(params, "availability", availability, "all")
+    setOptionalParam(params, "overclocked", overclocked, "all")
+    appendList(params, "socket", sockets)
+    appendList(params, "gpu", gpuModels)
+    appendList(params, "case", caseTypes)
+    appendList(params, "cooler", coolerTypes)
+    setOptionalParam(params, "page", currentPage, 1)
+
+    const nextUrl = params.size ? `${pathname}?${params.toString()}` : pathname
+    router.replace(nextUrl, { scroll: false })
+  }, [
+    availability,
+    caseTypes,
+    category,
+    coolerTypes,
+    currentPage,
+    gpuModels,
+    overclocked,
+    pathname,
+    priceLimits.max,
+    priceLimits.min,
+    priceMax,
+    priceMin,
+    query,
+    router,
+    sockets,
+    sort,
+    viewMode,
+  ])
 
   function changeCategory(nextCategory) {
     setCategory(nextCategory)
+    setPage(1)
     setOverclocked("all")
     setSockets([])
     setGpuModels([])
@@ -117,6 +166,7 @@ export default function ProductsCatalog({ products }) {
   }
 
   function resetFilters() {
+    setPage(1)
     setPriceMin(priceLimits.min)
     setPriceMax(priceLimits.max)
     setAvailability("all")
@@ -125,6 +175,11 @@ export default function ProductsCatalog({ products }) {
     setGpuModels([])
     setCaseTypes([])
     setCoolerTypes([])
+  }
+
+  function updateFilter(setter, value) {
+    setPage(1)
+    setter(value)
   }
 
   return (
@@ -156,7 +211,7 @@ export default function ProductsCatalog({ products }) {
             <span className="sr-only">Search components</span>
             <input
               value={query}
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => updateFilter(setQuery, event.target.value)}
               placeholder="Search CPU, GPU, brand..."
               className="h-12 w-full border border-white/15 bg-[#111412] px-4 text-sm text-white placeholder:text-gray-500"
             />
@@ -168,20 +223,20 @@ export default function ProductsCatalog({ products }) {
               title="Grid view"
               aria-label="Show products in grid view"
               aria-pressed={viewMode === "grid"}
-              onClick={() => setViewMode("grid")}
-              className={`grid size-10 place-items-center text-xl ${viewMode === "grid" ? "bg-[#b7f34a] text-black" : "text-gray-400 hover:text-white"}`}
+              onClick={() => updateFilter(setViewMode, "grid")}
+              className={`grid size-10 place-items-center ${viewMode === "grid" ? "bg-[#b7f34a] text-black" : "text-gray-400 hover:text-white"}`}
             >
-              ▦
+              <Grid3X3 size={18} />
             </button>
             <button
               type="button"
               title="List view"
               aria-label="Show products in list view"
               aria-pressed={viewMode === "list"}
-              onClick={() => setViewMode("list")}
-              className={`grid size-10 place-items-center text-xl ${viewMode === "list" ? "bg-[#b7f34a] text-black" : "text-gray-400 hover:text-white"}`}
+              onClick={() => updateFilter(setViewMode, "list")}
+              className={`grid size-10 place-items-center ${viewMode === "list" ? "bg-[#b7f34a] text-black" : "text-gray-400 hover:text-white"}`}
             >
-              ☷
+              <List size={19} />
             </button>
           </div>
 
@@ -189,7 +244,7 @@ export default function ProductsCatalog({ products }) {
             <span className="sr-only">Sort products</span>
             <select
               value={sort}
-              onChange={(event) => setSort(event.target.value)}
+              onChange={(event) => updateFilter(setSort, event.target.value)}
               className="w-full bg-transparent text-sm font-bold text-white outline-none"
             >
               {sortOptions.map(([value, label]) => (
@@ -223,15 +278,15 @@ export default function ProductsCatalog({ products }) {
                 limits={priceLimits}
                 minValue={priceMin}
                 maxValue={priceMax}
-                onMinChange={setPriceMin}
-                onMaxChange={setPriceMax}
+                onMinChange={(value) => updateFilter(setPriceMin, value)}
+                onMaxChange={(value) => updateFilter(setPriceMax, value)}
               />
             </FilterSection>
 
             <FilterSection title="Availability">
               <select
                 value={availability}
-                onChange={(event) => setAvailability(event.target.value)}
+                onChange={(event) => updateFilter(setAvailability, event.target.value)}
                 className="w-full border border-white/15 bg-[#090b0a] px-3 py-2.5 text-sm text-white"
               >
                 <option value="all">All products</option>
@@ -242,13 +297,13 @@ export default function ProductsCatalog({ products }) {
 
             {(category === "All" || category === "CPU") && (
               <FilterSection title="CPU overclocked">
-                <RadioGroup value={overclocked} onChange={setOverclocked} options={[["all", "All"], ["true", "Yes"], ["false", "No"]]} />
+                <RadioGroup value={overclocked} onChange={(value) => updateFilter(setOverclocked, value)} options={[["all", "All"], ["true", "Yes"], ["false", "No"]]} />
               </FilterSection>
             )}
 
             {(category === "All" || category === "CPU" || category === "Motherboard") && (
               <FilterSection title="CPU socket">
-                <CheckboxGroup options={socketOptions} selected={sockets} onChange={setSockets} />
+                <CheckboxGroup options={socketOptions} selected={sockets} onChange={(value) => updateFilter(setSockets, value)} />
               </FilterSection>
             )}
 
@@ -257,7 +312,7 @@ export default function ProductsCatalog({ products }) {
                 <CheckboxGroup
                   options={expandedGroups.gpu ? gpuOptions : gpuOptions.slice(0, 5)}
                   selected={gpuModels}
-                  onChange={setGpuModels}
+                  onChange={(value) => updateFilter(setGpuModels, value)}
                 />
                 {gpuOptions.length > 5 && (
                   <button
@@ -273,13 +328,13 @@ export default function ProductsCatalog({ products }) {
 
             {(category === "All" || category === "Case") && (
               <FilterSection title="Case type">
-                <CheckboxGroup options={caseOptions} selected={caseTypes} onChange={setCaseTypes} />
+                <CheckboxGroup options={caseOptions} selected={caseTypes} onChange={(value) => updateFilter(setCaseTypes, value)} />
               </FilterSection>
             )}
 
             {(category === "All" || category === "Cooling") && (
               <FilterSection title="CPU cooler type">
-                <CheckboxGroup options={coolerOptions} selected={coolerTypes} onChange={setCoolerTypes} />
+                <CheckboxGroup options={coolerOptions} selected={coolerTypes} onChange={(value) => updateFilter(setCoolerTypes, value)} />
               </FilterSection>
             )}
           </aside>
@@ -294,7 +349,7 @@ export default function ProductsCatalog({ products }) {
 
             {filteredProducts.length > 0 ? (
               <div className={viewMode === "grid" ? "grid gap-4 sm:grid-cols-2 xl:grid-cols-3" : "grid gap-3"}>
-                {filteredProducts.map((product) => (
+                {visibleProducts.map((product) => (
                   <ProductCard key={product.id} {...product} viewMode={viewMode} />
                 ))}
               </div>
@@ -307,11 +362,58 @@ export default function ProductsCatalog({ products }) {
                 </button>
               </div>
             )}
+
+            {filteredProducts.length > pageSize && (
+              <nav className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 sm:flex-row" aria-label="Catalog pagination">
+                <p className="text-sm text-gray-400">
+                  Page <span className="font-bold text-white">{currentPage}</span> of {pageCount}
+                </p>
+                <div className="flex w-full gap-2 sm:w-auto">
+                  <button
+                    type="button"
+                    disabled={currentPage === 1}
+                    onClick={() => setPage((value) => Math.max(1, value - 1))}
+                    className="min-h-11 flex-1 border border-white/15 px-4 text-sm font-black uppercase text-white disabled:cursor-not-allowed disabled:opacity-35 sm:flex-none"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    type="button"
+                    disabled={currentPage === pageCount}
+                    onClick={() => setPage((value) => Math.min(pageCount, value + 1))}
+                    className="min-h-11 flex-1 bg-[#b7f34a] px-4 text-sm font-black uppercase text-black disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400 sm:flex-none"
+                  >
+                    Next
+                  </button>
+                </div>
+              </nav>
+            )}
           </section>
         </div>
       </div>
     </>
   )
+}
+
+function validOption(value, options, fallback) {
+  return options.includes(value) ? value : fallback
+}
+
+function validPrice(value, fallback, limits) {
+  const number = Number(value)
+  return Number.isFinite(number) && number >= limits.min && number <= limits.max ? number : fallback
+}
+
+function readList(params, name) {
+  return [...new Set(params.getAll(name).map((value) => value.trim()).filter(Boolean))]
+}
+
+function appendList(params, name, values) {
+  values.forEach((value) => params.append(name, value))
+}
+
+function setOptionalParam(params, name, value, defaultValue) {
+  if (value !== defaultValue && value !== "") params.set(name, String(value))
 }
 
 function FilterSection({ title, children }) {

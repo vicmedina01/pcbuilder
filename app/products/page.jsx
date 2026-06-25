@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import ProductsCatalog from "@/components/ProductsCatalog"
 import { getProducts } from "@/lib/productService"
 
@@ -16,7 +17,20 @@ export default async function ProductsPage() {
           </p>
         </div>
       </div>
-      <ProductsCatalog products={products} />
+      <Suspense fallback={<CatalogLoading />}>
+        <ProductsCatalog products={products} />
+      </Suspense>
     </main>
+  )
+}
+
+function CatalogLoading() {
+  return (
+    <div className="mx-auto w-full max-w-7xl px-4 py-12 md:px-8">
+      <div className="h-12 animate-pulse bg-white/10" />
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 6 }, (_, index) => <div key={index} className="aspect-[4/5] animate-pulse bg-white/5" />)}
+      </div>
+    </div>
   )
 }

@@ -9,7 +9,7 @@ const buildPaths = [
     eyebrow: "High FPS",
     description: "Prioritize CPU response, stable frame times, and the right GPU for 1080p or 1440p.",
     target: "120-240 FPS",
-    image: "/products/gpu/rtx-5070.jpg",
+    image: "/products/gpu/nvidia-geforce-rtx-5070.jpg",
   },
   {
     title: "Cinematic gaming",
@@ -58,7 +58,7 @@ export default function Home() {
             src="/products/Case/fractal-design-north.jpg"
             alt="Fractal Design North PC case"
             fill
-            priority
+            loading="eager"
             sizes="(min-width: 768px) 58vw, 100vw"
             className="object-contain mix-blend-multiply"
           />
@@ -67,7 +67,7 @@ export default function Home() {
         <div className="relative z-10 mx-auto w-full max-w-7xl px-4 md:px-8">
           <div className="max-w-2xl">
             <p className="text-sm font-black uppercase text-[#315d35]">Build for your real workload</p>
-            <h1 className="mt-5 text-5xl font-black leading-[0.95] text-balance sm:text-6xl lg:text-8xl">
+            <h1 className="mt-5 text-4xl font-black leading-[0.98] text-balance sm:text-6xl lg:text-8xl">
               Your perfect PC starts with what you need.
             </h1>
             <p className="mt-6 max-w-xl text-base font-medium leading-7 text-[#39413b] sm:text-lg">
@@ -77,13 +77,13 @@ export default function Home() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/builder"
-                className="bg-[#101310] px-6 py-4 text-sm font-black uppercase text-white hover:bg-[#315d35]"
+                className="w-full bg-[#101310] px-6 py-4 text-center text-sm font-black uppercase text-white hover:bg-[#315d35] sm:w-auto"
               >
                 Start guided build
               </Link>
               <Link
                 href="/products"
-                className="border-2 border-[#101310] px-6 py-4 text-sm font-black uppercase text-[#101310] hover:bg-white/60"
+                className="w-full border-2 border-[#101310] px-6 py-4 text-center text-sm font-black uppercase text-[#101310] hover:bg-white/60 sm:w-auto"
               >
                 Browse components
               </Link>
@@ -102,7 +102,7 @@ export default function Home() {
           {categories.map((category) => (
             <Link
               key={category}
-              href="/products"
+              href={`/products?category=${encodeURIComponent(category)}`}
               className="border-b border-r border-white/10 px-4 py-5 text-center text-xs font-black uppercase text-gray-300 hover:bg-[#b7f34a] hover:text-black"
             >
               {category}

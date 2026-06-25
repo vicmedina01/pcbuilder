@@ -165,7 +165,7 @@ export default function BuilderClient({ products }) {
           <p className="section-label">PC Builder</p>
           <div className="mt-3 grid gap-5 lg:grid-cols-[1fr_300px] lg:items-end">
             <div>
-              <h1 className="text-4xl font-bold text-white md:text-5xl">Build around what you actually play.</h1>
+              <h1 className="text-3xl font-bold text-white sm:text-4xl md:text-5xl">Build around what you actually play.</h1>
               <p className="mt-4 max-w-3xl text-base leading-7 text-gray-300">
                 Pick the goal, budget, games, and performance target. The builder highlights a stronger starting point
                 and generates video searches for the CPU/GPU combo you choose.
@@ -254,7 +254,7 @@ export default function BuilderClient({ products }) {
               <button
                 type="button"
                 onClick={applyRecommendedBuild}
-                className="bg-[#b7f34a] px-4 py-2 font-black text-black hover:bg-[#93d329]"
+                className="min-h-11 w-full bg-[#b7f34a] px-4 py-2 font-black text-black hover:bg-[#93d329] sm:w-auto"
               >
                 Apply build
               </button>
@@ -459,7 +459,7 @@ function SegmentedControl({ label, value, options, onChange }) {
             key={option.value}
             type="button"
             onClick={() => onChange(option.value)}
-            className={`rounded px-2 py-2 text-sm font-semibold ${
+            className={`min-h-11 px-1 py-2 text-xs font-semibold sm:px-2 sm:text-sm ${
               value === option.value ? "bg-[#b7f34a] text-black" : "text-gray-300 hover:bg-white/5"
             }`}
           >
