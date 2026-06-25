@@ -43,6 +43,18 @@ Use this checklist after deploying a new version to Vercel.
 - Sign out.
 - Confirm protected/user-specific areas no longer show user data.
 
+## Administration
+
+- Add the signed-in email to `ADMIN_EMAILS`.
+- Sign out and sign in again.
+- Confirm the Admin navigation item appears.
+- Create a temporary product with a local image path.
+- Edit its price, stock, technical specifications, and featured status.
+- Confirm the storefront reflects the changes.
+- Delete the temporary product.
+- Sign in with a non-admin account and confirm `/admin` redirects away.
+- Confirm direct requests to `/api/admin/products` return `403` for non-admin users.
+
 ## Orders
 
 - Sign in with Google.
@@ -67,3 +79,5 @@ Use this checklist after deploying a new version to Vercel.
 - Confirm required Vercel environment variables are configured.
 - Confirm Google OAuth production redirect URI is configured.
 - Confirm the production URL loads without authentication errors.
+- Confirm Sentry receives a test error when a DSN is configured.
+- Check the home page, catalog, builder, and cart at mobile, tablet, and desktop widths.

@@ -38,6 +38,7 @@ Most component catalogs expect users to already understand hardware. PCBuilder s
 - Structured compatibility checks for socket, RAM, PSU, case, GPU, and cooling
 - Incompatible component options disabled before selection
 - Searchable catalog with technical filters, sorting, grid view, and list view
+- Shareable catalog URLs with synchronized filters and pagination
 - Persistent cart using React Context and local storage
 - Google OAuth authentication with NextAuth
 - Saved private builds and publicly shareable build URLs
@@ -45,8 +46,11 @@ Most component catalogs expect users to already understand hardware. PCBuilder s
 - Signed Stripe webhooks with amount validation and idempotent stock updates
 - Authenticated order history
 - PostgreSQL migrations and reusable product seed
-- Automated unit tests and GitHub Actions CI
-- Responsive UI, loading state, error boundary, 404 page, sitemap, and social metadata
+- Role-protected administration for products, pricing, stock, and featured items
+- Automated unit and Playwright end-to-end tests in GitHub Actions
+- Optional Sentry error and performance monitoring
+- Responsive UI verified on desktop and mobile viewports
+- Loading state, error boundary, 404 page, sitemap, and social metadata
 
 ## Tech Stack
 
@@ -131,10 +135,15 @@ NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET="generated_secret"
 GOOGLE_CLIENT_ID="google_client_id"
 GOOGLE_CLIENT_SECRET="google_client_secret"
+ADMIN_EMAILS="admin@example.com"
 STRIPE_SECRET_KEY="stripe_test_secret"
 STRIPE_WEBHOOK_SECRET="stripe_webhook_secret"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
+NEXT_PUBLIC_SENTRY_DSN=""
+SENTRY_DSN=""
 ```
+
+`ADMIN_EMAILS` accepts a comma-separated list. Sentry variables are optional; monitoring remains disabled when the DSN is empty.
 
 Apply migrations and seed products:
 
@@ -147,11 +156,21 @@ npm run db:seed
 
 ```bash
 npm test
+npm run test:e2e
 npm run lint
 npm run build
 ```
 
-GitHub Actions runs the same checks on pushes to `main` and pull requests. A manual production checklist is available in [`docs/manual-testing.md`](docs/manual-testing.md).
+Playwright runs the public storefront flows in desktop Chromium and an emulated Pixel 7 viewport. GitHub Actions runs unit tests, lint, build, and E2E tests on pushes to `main` and pull requests. A manual production checklist is available in [`docs/manual-testing.md`](docs/manual-testing.md).
+
+## Administration
+
+1. Add your Google account email to `ADMIN_EMAILS`.
+2. Apply migrations with `npx prisma migrate deploy`.
+3. Sign out and sign in again so the JWT receives the administrator role.
+4. Open `/admin`.
+
+The admin page and every mutation endpoint verify authorization independently. Hiding the navigation link is not used as the security boundary.
 
 ## Demo Flow
 
@@ -168,12 +187,11 @@ GitHub Actions runs the same checks on pushes to `main` and pull requests. A man
 - Performance recommendations are heuristic rather than benchmark-dataset driven.
 - Product prices represent the demo catalog and are not synchronized with retailers.
 - Google OAuth and Stripe require valid provider credentials.
-- The admin product-management interface is planned but not yet implemented.
+- Sentry requires a project DSN before events can be delivered.
+- Dependency auditing currently reports upstream transitive advisories in Prisma tooling, Sentry build tooling, and the PostCSS version bundled by Next.js.
 
 ## Next Improvements
 
-- Admin dashboard for catalog, stock, and featured products
-- URL-synchronized catalog filters and pagination
-- Broader API integration and end-to-end tests
 - Benchmark dataset for estimated FPS and AI workload scoring
-- Observability and error monitoring
+- Retailer price and availability synchronization
+- Authenticated E2E coverage for saved builds, administration, and Stripe test checkout
