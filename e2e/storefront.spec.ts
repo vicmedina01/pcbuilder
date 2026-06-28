@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test"
 test("home page exposes the main guided flows", async ({ page }) => {
   await page.goto("/")
 
-  await expect(page.getByRole("heading", { name: "Your perfect PC starts with what you need." })).toBeVisible()
+  await expect(page.getByRole("heading", { name: "Build the PC your games and work actually need." })).toBeVisible()
   await expect(page.getByRole("link", { name: "Start guided build" })).toHaveAttribute("href", "/builder")
   await expect(page.getByRole("link", { name: "Browse components" })).toHaveAttribute("href", "/products")
 })
