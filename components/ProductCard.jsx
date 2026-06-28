@@ -18,8 +18,9 @@ export default function ProductCard({ id, name, description, price, category, im
             src={image}
             alt={name}
             fill
+            unoptimized
             sizes="170px"
-            className="object-contain p-5 transition-transform duration-300 group-hover:scale-105"
+            className="object-contain p-7 transition-transform duration-300 group-hover:scale-[1.03]"
           />
         </Link>
 
@@ -56,8 +57,9 @@ export default function ProductCard({ id, name, description, price, category, im
             src={image}
             alt={name}
             fill
+            unoptimized
             sizes="(min-width: 1280px) 22vw, (min-width: 640px) 40vw, 100vw"
-            className="object-contain p-8 transition-transform duration-300 group-hover:scale-105"
+            className="object-contain p-10 transition-transform duration-300 group-hover:scale-[1.03] sm:p-12"
           />
           <span className="absolute left-3 top-3 bg-[#101310] px-2.5 py-1.5 text-[11px] font-black uppercase text-white">
             {category}

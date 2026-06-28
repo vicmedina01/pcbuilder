@@ -10,7 +10,15 @@ export default function ProductDetails({ product }) {
   return (
     <main className="mx-auto grid w-full max-w-7xl flex-1 gap-10 px-4 py-12 md:grid-cols-2 md:px-8 md:py-20">
       <div className="relative aspect-square overflow-hidden bg-[#f2f4f0]">
-        <Image src={product.image} alt={product.name} fill loading="eager" sizes="(min-width: 768px) 50vw, 100vw" className="object-contain p-8" />
+        <Image
+          src={product.image}
+          alt={product.name}
+          fill
+          loading="eager"
+          unoptimized
+          sizes="(min-width: 1280px) 500px, (min-width: 768px) 46vw, 90vw"
+          className="object-contain p-12 sm:p-16 lg:p-24"
+        />
       </div>
       <section>
         <p className="section-label">{product.category}</p>

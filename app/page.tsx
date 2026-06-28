@@ -53,14 +53,15 @@ export default function Home() {
     <main className="flex-1 overflow-hidden bg-[#090b0a]">
       <section className="hardware-grid relative isolate flex h-[calc(100svh-126px)] min-h-[560px] max-h-[780px] items-center overflow-hidden bg-[#eef2eb] text-[#0a0c0b]">
         <div className="absolute inset-y-0 right-0 w-[55%] bg-[#dce4da] max-md:w-full max-md:opacity-45" />
-        <div className="absolute right-[-5%] top-1/2 h-[78%] w-[58%] -translate-y-1/2 max-md:right-[-36%] max-md:h-[58%] max-md:w-[105%]">
+        <div className="absolute right-0 top-1/2 h-[72%] w-[52%] -translate-y-1/2 max-md:right-[-30%] max-md:h-[52%] max-md:w-[92%]">
           <Image
             src="/products/Case/fractal-design-north.jpg"
             alt="Fractal Design North PC case"
             fill
             loading="eager"
-            sizes="(min-width: 768px) 58vw, 100vw"
-            className="object-contain mix-blend-multiply"
+            unoptimized
+            sizes="(min-width: 1280px) 520px, (min-width: 768px) 44vw, 78vw"
+            className="object-contain p-8 mix-blend-multiply md:p-12 xl:p-20"
           />
         </div>
 
@@ -130,8 +131,9 @@ export default function Home() {
                   src={path.image}
                   alt={path.title}
                   fill
-                  sizes="(min-width: 1024px) 33vw, 100vw"
-                  className="object-contain p-5 transition-transform duration-300 group-hover:scale-105"
+                  unoptimized
+                  sizes="(min-width: 1280px) 360px, (min-width: 1024px) 30vw, 82vw"
+                  className="object-contain p-10 transition-transform duration-300 group-hover:scale-[1.03] sm:p-12"
                 />
                 <span className="absolute left-4 top-4 bg-[#101310] px-3 py-2 text-xs font-black uppercase text-white">
                   {path.target}
@@ -195,8 +197,9 @@ export default function Home() {
                   src={part.image}
                   alt={part.name}
                   fill
-                  sizes="(min-width: 1024px) 33vw, 100vw"
-                  className="object-contain p-7 transition-transform duration-300 group-hover:scale-105"
+                  unoptimized
+                  sizes="(min-width: 1280px) 360px, (min-width: 1024px) 30vw, 82vw"
+                  className="object-contain p-14 transition-transform duration-300 group-hover:scale-[1.03] sm:p-16 xl:p-20"
                 />
               </div>
               <div className="p-6">

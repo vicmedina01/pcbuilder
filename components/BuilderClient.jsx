@@ -317,8 +317,9 @@ export default function BuilderClient({ products }) {
                             src={selected.image}
                             alt={selected.name}
                             fill
+                            unoptimized
                             sizes="120px"
-                            className="object-contain p-2"
+                            className="object-contain p-3"
                           />
                         )}
                       </div>
