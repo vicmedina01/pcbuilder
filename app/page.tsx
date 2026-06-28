@@ -113,16 +113,15 @@ export default function Home() {
     <main className="flex-1 overflow-hidden bg-[#080b0a]">
       <section className="relative isolate flex h-[calc(100svh-104px)] min-h-[620px] max-h-[860px] items-center overflow-hidden text-white">
         <Image
-          src="/images/pc-builder-hero.jpg"
+          src="/images/pc-builder-hero-v2.png"
           alt="White gaming PC with a desktop monitor"
           fill
           loading="eager"
-          unoptimized
           sizes="100vw"
-          className="-z-20 object-cover object-[66%_center] sm:object-center"
+          quality={95}
+          className="-z-20 object-cover object-[70%_center] sm:object-center"
         />
-        <div className="absolute inset-0 -z-10 bg-black/25" />
-        <div className="absolute inset-y-0 left-0 -z-10 w-full bg-[#080b0a]/78 sm:w-[72%] lg:w-[58%]" />
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(5,8,7,0.88)_0%,rgba(5,8,7,0.72)_34%,rgba(5,8,7,0.34)_58%,rgba(5,8,7,0.06)_78%)] max-sm:bg-[linear-gradient(180deg,rgba(5,8,7,0.76)_0%,rgba(5,8,7,0.58)_55%,rgba(5,8,7,0.88)_100%)]" />
 
         <div className="mx-auto w-full max-w-7xl px-4 pb-20 pt-12 md:px-8 lg:pb-24">
           <div className="max-w-2xl">
